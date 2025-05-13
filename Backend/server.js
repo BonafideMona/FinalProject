@@ -5,6 +5,9 @@ const cors = require('cors');
 const app = express();
 app.use(cors())
 
+app.use(express.json());
+
+
 const db = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
@@ -25,6 +28,15 @@ app.get('/tbl_accounts', (req, res) => {
     })
 })
 
-app.listen(8081, ()=> {
+app.post('/signup', (req, res) => {
+    const {accName, password} = req.body;
+    const sql = "INSERT INTO tbl_accounts(accName, password) VALUES (?,?)";
+    db.query(sql, [accName, password], (err, result) => {
+        if (err) return res.status(500).json({error: err});
+        return res.json({message: "Signup successful"});
+    });
+});
+
+app.listen(8801, ()=> {
     console.log("listening");
 })
