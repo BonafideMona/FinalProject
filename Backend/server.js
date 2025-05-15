@@ -28,12 +28,28 @@ app.get('/tbl_accounts', (req, res) => {
     })
 })
 
-app.post('/signup', (req, res) => {
-    const {accName, password} = req.body;
-    const sql = "INSERT INTO tbl_accounts(accName, password) VALUES (?,?)";
+// app.post('/signup', (req, res) => {
+//     const {accName, password} = req.body;
+//     const sql = "INSERT INTO tbl_accounts(accName, password) VALUES (?,?)";
+//     db.query(sql, [accName, password], (err, result) => {
+//         if (err) return res.status(500).json({error: err});
+//         return res.json({message: "Signup successful"});
+//     });
+// });
+
+app.post('/login', (req, res) => {
+    const { accName, password } = req.body;
+    const sql = "SELECT * FROM tbl_accounts WHERE accName = ? AND password = ?";
     db.query(sql, [accName, password], (err, result) => {
-        if (err) return res.status(500).json({error: err});
-        return res.json({message: "Signup successful"});
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (result.length > 0) {
+            return res.json({ message: "Login successful" });
+        } else {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
     });
 });
 
