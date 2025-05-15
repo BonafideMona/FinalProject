@@ -4,6 +4,8 @@ import React from "react";
 import TrendingProductsSection from "./TrendingProductsComponents/TrendingProductsSection";
 import { useEffect } from "react";
 import Signup from "./Signup/Signup";
+import NavigationBar from "./Navigator/NavigationBar";
+import ShopByDept from "./Navigator/ShopByDept";
 
 export default function App() {
   useEffect(() =>{
@@ -14,6 +16,10 @@ export default function App() {
   } )
   return (
     <main>
+
+      <NavigationBar />
+      <ShopByDept />
+      
       <TrendingProductsSection />
       <CategorySection />
       <NewlyArrived />
