@@ -10,44 +10,50 @@ export default function TrendingProductsBox({
   onDecrement,
 }) {
   return (
-    <div className="w-56 border rounded-xl bg-white shadow p-4 text-center text-gray-800">
-      <div className="relative bg-gray-100 rounded-md flex items-center justify-center h-40 mb-4">
-        {discount && (
-          <span className="absolute top-2 left-2 bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded">
-            -{discount}
-          </span>
-        )}
+    <div className="border rounded-md p-3 text-center bg-olive text-gray-800">
+      <div className="relative">
         {image ? (
           <img
             src={image}
             alt={name}
-            className="h-24 object-contain"
+            className="w-24 h-24 object-cover mb-3 rounded transition-transform duration-200 hover:scale-105 mx-auto"
           />
         ) : (
-          <span className="text-sm text-gray-500">No Image</span>
+          <div className="w-24 h-24 bg-gray-200 flex items-center justify-center mb-3 rounded mx-auto">
+            No Image
+          </div>
+        )}
+
+        {discount && (
+          <span className="absolute top-1 left-1 bg-green-500 text-white text-xs px-2 py-1 rounded">
+            -{discount}
+          </span>
         )}
       </div>
 
-      <h3 className="text-sm font-semibold mb-1">{name}</h3>
-      <p className="text-base font-bold text-gray-900 mb-3">${price}</p>
+      <h3 className="text-sm font-semibold truncate mb-2">{name}</h3>
 
-      <div className="flex items-center justify-center gap-2 mb-3">
+      <p className="text-sm font-bold text-gray-900 mb-3">{price}</p>
+
+      <div className="flex items-center justify-center gap-3 mb-3">
         <button
           onClick={onDecrement}
-          className="px-2 py-1 border rounded text-sm"
+          className="px-3 py-1 bg-gray-200 rounded transition-colors duration-150 hover:bg-gray-300"
         >
           −
         </button>
         <span className="text-sm">{quantity}</span>
         <button
           onClick={onIncrement}
-          className="px-2 py-1 border rounded text-sm"
+          className="px-3 py-1 bg-gray-200 rounded transition-colors duration-150 hover:bg-gray-300"
         >
           +
         </button>
       </div>
 
-      <button className="text-xs text-blue-600 hover:underline">Add to Cart</button>
+      <button className="px-4 py-1 bg-green-500 text-white rounded-md text-xs transition-colors duration-150 hover:bg-green-600">
+        Add to Cart
+      </button>
     </div>
   );
 }
