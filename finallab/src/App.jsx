@@ -1,35 +1,24 @@
-import CategorySection from "./CategoryComponents/CategorySection";
-import NewlyArrived from "./NewlyArrived";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./Pages/HomePage";
+import Profile from "./Pages/Profile"; 
+import AddProduct from "./Pages/AddProducts"
 import React from "react";
-import TrendingProductsSection from "./TrendingProductsComponents/TrendingProductsSection";
-import { useEffect } from "react";
-import Signup from "./Signup/Signup";
-import NavigationBar from "./Navigator/NavigationBar";
-import ShopByDept from "./Navigator/ShopByDept";
 
 export default function App() {
-  useEffect(() =>{
-    fetch('http://localhost:8801/tbl_accounts')
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err))
-  } )
   return (
     <main>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="/profile" element={<Profile />} />
 
-      <NavigationBar />
-      <ShopByDept />
-      
-      <TrendingProductsSection />
-      <CategorySection />
-      <NewlyArrived />
 
-      <div>
-        <Signup />
 
-      </div>
+          {/* Seller side */}
+          <Route path ="addProduct" element={<AddProduct />} />
+
+        </Routes>
+      </BrowserRouter>
     </main>
-
-    
   );
 }
