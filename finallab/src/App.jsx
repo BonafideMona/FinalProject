@@ -13,13 +13,9 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
 
 
-<<<<<<< HEAD
-=======
-      <div>
->>>>>>> e2533919f7d73f64c5c99cd77d3be326bd7cc312
 
           {/* Seller side */}
-          <Route path ="AddProduct" element={<AddProduct />} />
+          <Route path ="addProduct" element={<AddProduct />} />
 
         </Routes>
       </BrowserRouter>
