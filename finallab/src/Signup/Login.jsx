@@ -29,10 +29,12 @@ function Login({ onSwitchToSignup }) {
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
+      console.log(data);
       setMessage(data.message || data.error);
           if (data.message === "Login successful") {
       sessionStorage.setItem("email", data.email);
       sessionStorage.setItem("accName", data.accName);
+      sessionStorage.setItem("accID", data.accID);
       }
     } catch (error) {
       console.error("Login error:", error);

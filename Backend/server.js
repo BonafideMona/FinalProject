@@ -45,8 +45,9 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ error: "Internal server error" });
         }
         if (result.length > 0) {
-                        return res.json({ 
+                return res.json({ 
                 message: "Login successful", 
+                accID: result[0].accID,
                 accName: result[0].accName, 
                 email: result[0].email 
             });
