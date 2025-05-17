@@ -29,9 +29,9 @@ app.get('/tbl_accounts', (req, res) => {
 })
 
 app.post('/signup', (req, res) => {
-    const {accName, password} = req.body;
-    const sql = "INSERT INTO tbl_accounts(accName, password) VALUES (?,?)";
-    db.query(sql, [accName, password], (err, result) => {
+    const {accName, email, password} = req.body;
+    const sql = "INSERT INTO tbl_accounts(accName, email, password) VALUES (?,?)";
+    db.query(sql, [accName, email, password], (err, result) => {
         if (err) return res.status(500).json({error: err});
         return res.json({message: "Signup successful"});
     });
