@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 function Login({ onSwitchToSignup }) {
-  const [accName, setAccName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const validate = () => {
     const newErrors = {};
-    if (!accName.trim()) newErrors.accName = "Email is required";
+    if (!email.trim()) newErrors.email = "Email is required";
     if (password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
     return newErrors;
@@ -26,7 +26,7 @@ function Login({ onSwitchToSignup }) {
       const res = await fetch("http://127.0.0.1:8801/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ accName, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       setMessage(data.message || data.error);
@@ -45,13 +45,13 @@ function Login({ onSwitchToSignup }) {
         <input
           type="text"
           className={`w-full px-4 py-2 border ${
-            errors.accName ? "border-red-500" : "border-gray-300"
+            errors.email ? "border-red-500" : "border-gray-300"
           } rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
           placeholder="Enter email"
-          value={accName}
-          onChange={(e) => setAccName(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        {errors.accName && <p className="text-red-500 text-xs mt-1">{errors.accName}</p>}
+        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
       </div>
 
       <div>

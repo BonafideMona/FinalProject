@@ -18,7 +18,6 @@ app.get('/', (re, res) => {
     return res.json("From Backend Side");
 }) 
 
-app.get('/')
 
 app.get('/tbl_accounts', (req, res) => {
     const sql = "SELECT * FROM tbl_accounts";
@@ -30,7 +29,7 @@ app.get('/tbl_accounts', (req, res) => {
 
 app.post('/signup', (req, res) => {
     const {accName, email, password} = req.body;
-    const sql = "INSERT INTO tbl_accounts(accName, email, password) VALUES (?,?)";
+    const sql = "INSERT INTO tbl_accounts(accName, email, password) VALUES (?,?,?)";
     db.query(sql, [accName, email, password], (err, result) => {
         if (err) return res.status(500).json({error: err});
         return res.json({message: "Signup successful"});
@@ -39,7 +38,7 @@ app.post('/signup', (req, res) => {
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    const sql = "SELECT * FROM tbl_accounts WHERE accName = ? AND password = ?";
+    const sql = "SELECT * FROM tbl_accounts WHERE email = ? AND password = ?";
     db.query(sql, [email, password], (err, result) => {
         if (err) {
             console.error("Database error:", err);
