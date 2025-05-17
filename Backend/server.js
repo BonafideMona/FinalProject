@@ -37,6 +37,24 @@ app.post('/signup', (req, res) => {
     });
 });
 
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    const sql = "SELECT * FROM tbl_accounts WHERE accName = ? AND password = ?";
+    db.query(sql, [email, password], (err, result) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (result.length > 0) {
+            return res.json({ message: "Login successful" });
+        } else {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
+    });
+});
+
+
+
 app.listen(8801, ()=> {
     console.log("listening");
 })
