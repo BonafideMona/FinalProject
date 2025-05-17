@@ -11,16 +11,6 @@ function Profile() {
         </div>
       )}
 
-      {/* Modals */}
-      <Modal isOpen={showSignupModal} onClose={() => setShowSignupModal(false)}>
-        <Signup />
-      </Modal>
-
-      <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
-        <Login />
-      </Modal>
-    </div>
-  );
-}
+     
 
 export default Profile;
