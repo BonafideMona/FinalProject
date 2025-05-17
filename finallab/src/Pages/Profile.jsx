@@ -5,7 +5,7 @@ function Profile() {
     return (
         <div>
             <p>Here is the profile page</p>
-        <Link to ="/addProduct"> Click to Add Products</Link>
+        <Link to ="/AddProductForm"> Click to Add Products</Link>
         </div>
     )
 }
