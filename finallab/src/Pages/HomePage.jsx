@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Signup from "../Signup/Signup";
 import NavigationBar from "../Navigator/NavigationBar";
 import ShopByDept from "../Navigator/ShopByDept";
+import Modal from "../Signup/Modal";
 
 function HomePage() {
   useEffect(() => {
@@ -23,10 +24,7 @@ function HomePage() {
         <TrendingProductsSection />
         <CategorySection />
         <NewlyArrived />
-
-        <div>
-          <Signup />
-        </div>
+        <Modal />
       </main>
     </div>
   );
