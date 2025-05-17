@@ -30,6 +30,10 @@ function Login({ onSwitchToSignup }) {
       });
       const data = await res.json();
       setMessage(data.message || data.error);
+          if (data.message === "Login successful") {
+      sessionStorage.setItem("email", data.email);
+      sessionStorage.setItem("accName", data.accName);
+      }
     } catch (error) {
       console.error("Login error:", error);
       setMessage("Network error");

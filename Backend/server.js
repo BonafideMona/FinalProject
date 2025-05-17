@@ -45,7 +45,11 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ error: "Internal server error" });
         }
         if (result.length > 0) {
-            return res.json({ message: "Login successful" });
+                        return res.json({ 
+                message: "Login successful", 
+                accName: result[0].accName, 
+                email: result[0].email 
+            });
         } else {
             return res.status(401).json({ error: "Invalid credentials" });
         }
