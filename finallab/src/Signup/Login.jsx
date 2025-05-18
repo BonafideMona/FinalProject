@@ -14,7 +14,6 @@ function Login({ onSwitchToSignup }) {
 
   const { login } = useContext(UserContext);
 
-
   const validate = () => {
     const newErrors = {};
     if (!email.trim()) newErrors.email = "Email is required";
@@ -48,7 +47,6 @@ function Login({ onSwitchToSignup }) {
           accID: data.accID,
         });
       }
-
     } catch (error) {
       console.error("Login error:", error);
       setMessage("Network error");
@@ -127,28 +125,33 @@ function Login({ onSwitchToSignup }) {
         <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
-      <div className="space-y-3">
-        <button
-          type="button"
-          className="w-full flex items-center justify-center bg-[#4267B2] hover:bg-[#365899] text-white py-2 px-4 rounded-md font-medium transition duration-200"
-        >
-          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.2 3-3.2.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.5l-.4 3h-2.1v7A10 10 0 0 0 22 12" />
-          </svg>
-          Login with Facebook
-        </button>
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-            console.log(jwtDecode(credentialResponse.credential))
-            navigate("/");
-            
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        />
-      </div>
+      <GoogleLogin
+        onSuccess={async (credentialResponse) => {
+          const decoded = jwtDecode(credentialResponse.credential);
+          const fName = decoded.given_name;
+          const lName = decoded.family_name;
+          const accName = fName;
+          const email = decoded.email;
+
+          await fetch("http://localhost:8801/signup", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({ accName, email, password: "" }),
+          });
+
+          // Store in sessionStorage if needed
+          sessionStorage.setItem("email", email);
+          sessionStorage.setItem("accName", accName);
+          sessionStorage.setItem("fName", fName);
+          sessionStorage.setItem("lName", lName);
+
+          if (onClose) onClose();
+          navigate("/");
+        }}
+        onError={() => {
+          console.log("Login Failed");
+        }}
+      />
 
       {message && (
         <div className="text-center text-sm text-gray-800 mt-4 font-medium">
