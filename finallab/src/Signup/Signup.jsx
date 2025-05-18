@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-  import { jwtDecode } from "jwt-decode";
-  import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
 function Signup({ onSwitchToLogin }) {
@@ -10,7 +10,6 @@ function Signup({ onSwitchToLogin }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
-
 
   const validate = () => {
     const newErrors = {};
@@ -158,7 +157,7 @@ function Signup({ onSwitchToLogin }) {
           await fetch("http://localhost:8801/signup", {
             method: "POST",
             headers: { "Content-type": "application/json" },
-            body: JSON.stringify({ accName, email, password: "" }),
+            body: JSON.stringify({ fName, lName, accName, email, password: "" }),
           });
 
           // Store in sessionStorage if needed

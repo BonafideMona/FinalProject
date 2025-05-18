@@ -28,10 +28,10 @@ app.get("/tbl_accounts", (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
-  const { accName, email, password } = req.body;
+  const { fName, lName, accName, email, password } = req.body;
   const sql =
-    "INSERT INTO tbl_accounts(accName, email, password) VALUES (?,?,?)";
-  db.query(sql, [accName, email, password], (err, result) => {
+    "INSERT INTO tbl_accounts(fName, lName, accName, email, password) VALUES (?,?,?,?,?)";
+  db.query(sql, [fName, lName, accName, email, password], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     return res.json({ message: "Signup successful" });
   });
