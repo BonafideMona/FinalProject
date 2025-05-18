@@ -1,18 +1,28 @@
 import React, { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
+import { useContext } from "react";
+import { UserContext } from "./UserContext"; // adjust path if needed
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import HomePage from "../Pages/HomePage";
 
 function Login({ onSwitchToSignup }) {
-  const [accName, setAccName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
+  const { login } = useContext(UserContext);
+
   const validate = () => {
     const newErrors = {};
-    if (!accName.trim()) newErrors.accName = "Email is required";
+    if (!email.trim()) newErrors.email = "Email is required";
     if (password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
     return newErrors;
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,13 +33,20 @@ function Login({ onSwitchToSignup }) {
     }
     setErrors({});
     try {
-      const res = await fetch("http://127.0.0.1:8801/login", {
+      const res = await fetch("http://localhost:8801/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ accName, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       setMessage(data.message || data.error);
+      if (data.message === "Login successful") {
+        login({
+          email: data.email,
+          accName: data.accName,
+          accID: data.accID,
+        });
+      }
     } catch (error) {
       console.error("Login error:", error);
       setMessage("Network error");
@@ -38,24 +55,32 @@ function Login({ onSwitchToSignup }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Login</h2>
+      <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
+        Login
+      </h2>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Email
+        </label>
         <input
           type="text"
           className={`w-full px-4 py-2 border ${
-            errors.accName ? "border-red-500" : "border-gray-300"
+            errors.email ? "border-red-500" : "border-gray-300"
           } rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
           placeholder="Enter email"
-          value={accName}
-          onChange={(e) => setAccName(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        {errors.accName && <p className="text-red-500 text-xs mt-1">{errors.accName}</p>}
+        {errors.email && (
+          <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+        )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Password
+        </label>
         <input
           type="password"
           className={`w-full px-4 py-2 border ${
@@ -65,7 +90,9 @@ function Login({ onSwitchToSignup }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+        {errors.password && (
+          <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+        )}
       </div>
 
       <div className="text-right">
@@ -98,27 +125,33 @@ function Login({ onSwitchToSignup }) {
         <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
-      <div className="space-y-3">
-        <button
-          type="button"
-          className="w-full flex items-center justify-center bg-[#4267B2] hover:bg-[#365899] text-white py-2 px-4 rounded-md font-medium transition duration-200"
-        >
-          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.2 3-3.2.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.5l-.4 3h-2.1v7A10 10 0 0 0 22 12" />
-          </svg>
-          Login with Facebook
-        </button>
+      <GoogleLogin
+        onSuccess={async (credentialResponse) => {
+          const decoded = jwtDecode(credentialResponse.credential);
+          const fName = decoded.given_name;
+          const lName = decoded.family_name;
+          const accName = fName;
+          const email = decoded.email;
 
-        <button
-          type="button"
-          className="w-full flex items-center justify-center bg-[#DB4437] hover:bg-[#c23321] text-white py-2 px-4 rounded-md font-medium transition duration-200"
-        >
-          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
-          </svg>
-          Login with Google
-        </button>
-      </div>
+          await fetch("http://localhost:8801/signup", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({ accName, email, password: "" }),
+          });
+
+          // Store in sessionStorage if needed
+          sessionStorage.setItem("email", email);
+          sessionStorage.setItem("accName", accName);
+          sessionStorage.setItem("fName", fName);
+          sessionStorage.setItem("lName", lName);
+
+          if (onClose) onClose();
+          navigate("/");
+        }}
+        onError={() => {
+          console.log("Login Failed");
+        }}
+      />
 
       {message && (
         <div className="text-center text-sm text-gray-800 mt-4 font-medium">

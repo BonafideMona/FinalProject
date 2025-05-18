@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 function Signup({ onSwitchToLogin }) {
   const [accName, setAccName] = useState("");
@@ -13,8 +16,10 @@ function Signup({ onSwitchToLogin }) {
     if (!accName.trim()) newErrors.accName = "Account name is required";
     if (!email.trim()) newErrors.email = "Email is required";
     if (!password) newErrors.password = "Password is required";
-    else if (password.length < 6) newErrors.password = "Password must be at least 6 characters";
-    if (password !== confirmPassword) newErrors.confirmPassword = "Passwords don't match";
+    else if (password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+    if (password !== confirmPassword)
+      newErrors.confirmPassword = "Passwords don't match";
     return newErrors;
   };
 
@@ -42,10 +47,14 @@ function Signup({ onSwitchToLogin }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Sign Up</h2>
+      <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
+        Sign Up
+      </h2>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Email
+        </label>
         <input
           type="email"
           className={`w-full px-4 py-2 border ${
@@ -55,10 +64,14 @@ function Signup({ onSwitchToLogin }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+        {errors.email && (
+          <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+        )}
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">UserName</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          UserName
+        </label>
         <input
           type="text"
           className={`w-full px-4 py-2 border ${
@@ -68,11 +81,15 @@ function Signup({ onSwitchToLogin }) {
           value={accName}
           onChange={(e) => setAccName(e.target.value)}
         />
-        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+        {errors.email && (
+          <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+        )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Create password</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Create password
+        </label>
         <input
           type="password"
           className={`w-full px-4 py-2 border ${
@@ -82,11 +99,15 @@ function Signup({ onSwitchToLogin }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+        {errors.password && (
+          <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+        )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Confirm password
+        </label>
         <input
           type="password"
           className={`w-full px-4 py-2 border ${
@@ -96,7 +117,9 @@ function Signup({ onSwitchToLogin }) {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+        {errors.confirmPassword && (
+          <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
+        )}
       </div>
 
       <button
@@ -123,17 +146,33 @@ function Signup({ onSwitchToLogin }) {
         <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
-      <div className="space-y-3">
-        <button
-          type="button"
-          className="w-full flex items-center justify-center bg-[#4285F4] hover:bg-[#357ae8] text-white py-2 px-4 rounded-md font-medium transition duration-200"
-        >
-          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
-          </svg>
-          Login with Google
-        </button>
-      </div>
+      <GoogleLogin
+        onSuccess={async (credentialResponse) => {
+          const decoded = jwtDecode(credentialResponse.credential);
+          const fName = decoded.given_name;
+          const lName = decoded.family_name;
+          const accName = fName;
+          const email = decoded.email;
+
+          await fetch("http://localhost:8801/signup", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({ fName, lName, accName, email, password: "" }),
+          });
+
+          // Store in sessionStorage if needed
+          sessionStorage.setItem("email", email);
+          sessionStorage.setItem("accName", accName);
+          sessionStorage.setItem("fName", fName);
+          sessionStorage.setItem("lName", lName);
+
+          if (onClose) onClose();
+          navigate("/");
+        }}
+        onError={() => {
+          console.log("Login Failed");
+        }}
+      />
 
       {message && (
         <div className="text-center text-sm text-gray-800 mt-4 font-medium">
