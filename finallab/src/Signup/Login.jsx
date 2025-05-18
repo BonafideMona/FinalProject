@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import HomePage from "../Pages/HomePage";
 
 function Login({ onSwitchToSignup }) {
   const [email, setEmail] = useState("");
@@ -15,6 +18,8 @@ function Login({ onSwitchToSignup }) {
     return newErrors;
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
@@ -24,7 +29,7 @@ function Login({ onSwitchToSignup }) {
     }
     setErrors({});
     try {
-      const res = await fetch("http://127.0.0.1:8801/login", {
+      const res = await fetch("http://localhost:8801/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -124,24 +129,17 @@ function Login({ onSwitchToSignup }) {
           </svg>
           Login with Facebook
         </button>
-
-        <button
-          type="button"
-          className="w-full flex items-center justify-center bg-[#DB4437] hover:bg-[#c23321] text-white py-2 px-4 rounded-md font-medium transition duration-200"
-        >
-          <div className="space-y-3">
-            <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                // handle Google login success here
-                console.log(credentialResponse);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
-          </div>
-          Login with Google
-        </button>
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+            console.log(jwtDecode(credentialResponse.credential))
+            navigate("/");
+            
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
       </div>
 
       {message && (
