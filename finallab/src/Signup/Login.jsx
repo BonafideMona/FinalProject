@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { useContext } from "react";
+import { UserContext } from "./UserContext"; // adjust path if needed
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import HomePage from "../Pages/HomePage";
@@ -9,6 +11,9 @@ function Login({ onSwitchToSignup }) {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
+
+  const { login } = useContext(UserContext);
+
 
   const validate = () => {
     const newErrors = {};
@@ -37,10 +42,13 @@ function Login({ onSwitchToSignup }) {
       const data = await res.json();
       setMessage(data.message || data.error);
       if (data.message === "Login successful") {
-        sessionStorage.setItem("email", data.email);
-        sessionStorage.setItem("accName", data.accName);
-        sessionStorage.setItem("accID", data.accID);
+        login({
+          email: data.email,
+          accName: data.accName,
+          accID: data.accID,
+        });
       }
+
     } catch (error) {
       console.error("Login error:", error);
       setMessage("Network error");
