@@ -34,6 +34,7 @@ function Login({ onSwitchToSignup }) {
       if (data.message === "Login successful") {
         sessionStorage.setItem("email", data.email);
         sessionStorage.setItem("accName", data.accName);
+        sessionStorage.setItem("accID", data.accID);
       }
     } catch (error) {
       console.error("Login error:", error);
