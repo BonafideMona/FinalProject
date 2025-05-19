@@ -139,6 +139,9 @@ app.get("/get-trending-products", (req, res) => {
       price, 
       image_url 
     FROM tbl_products 
+    WHERE status = 'Y'
+    ORDER BY price ASC
+    LIMIT 6
   `;
 
   db.query(query, (err, results) => {

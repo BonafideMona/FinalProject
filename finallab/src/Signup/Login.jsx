@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import HomePage from "../Pages/HomePage";
 
-function Login({ onSwitchToSignup }) {
+function Login({ onSwitchToSignup, onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -47,6 +47,7 @@ function Login({ onSwitchToSignup }) {
           accName: data.accName,
           accID: data.accID,
         });
+        if (onLoginSuccess) onLoginSuccess();
       }
     } catch (error) {
       console.error("Login error:", error);
