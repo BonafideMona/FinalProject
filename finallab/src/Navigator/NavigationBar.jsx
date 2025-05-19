@@ -18,10 +18,6 @@ function NavigationBar({ showSearch = true, showDevelopers = true, showCart = tr
 
   const closeModal = () => setAuthMode(null);
 
-  const handleLogoutClick = () => {
-    setShowLogoutConfirm(true);
-  };
-
   const confirmLogout = () => {
     logout();
     setShowLogoutConfirm(false);
@@ -57,7 +53,7 @@ function NavigationBar({ showSearch = true, showDevelopers = true, showCart = tr
                 <Profile />
               </Link>
               <button
-                onClick={handleLogoutClick}
+                onClick={logout}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
               >
                 Logout
