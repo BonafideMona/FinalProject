@@ -30,7 +30,7 @@ app.get("/tbl_accounts", (req, res) => {
 app.post("/signup", (req, res) => {
   const { accName, email, password } = req.body;
   const sql =
-    "INSERT INTO tbl_accounts(accName, email, password) VALUES (?,?,?)";
+    "INSERT INTO tbl_accounts(accName, email, password, created_At, updated_At) VALUES (?,?,?,CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
   db.query(sql, [accName, email, password], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     return res.json({ message: "Signup successful" });
@@ -76,6 +76,47 @@ const upload = multer({ storage });
 
 const pathToAssets = path.join(__dirname, "../finallab/src/assets");
 app.use("/assets", express.static(pathToAssets));
+
+// Get trending products
+app.get("/get-trending-products", (req, res) => {
+  const query = `
+    SELECT 
+      product_id, 
+      product_name, 
+      price, 
+      image_url 
+    FROM tbl_products 
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching trending products:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json({ products: results });
+  });
+});
+
+// add to cart 
+
+app.post('/add-to-cart', (req, res) => {
+  const { accID, product_id, quantity } = req.body;
+
+  const query = `
+    INSERT INTO tbl_carts (accID, product_id, quantity)
+    VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE quantity = quantity + ?`;
+
+  db.query(query, [accID, product_id, quantity, quantity], (err, result) => {
+    if (err) {
+      console.error("Failed to add to cart:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    res.json({ message: "Item added to cart" });
+  });
+});
 
 
 // GET products by accID
