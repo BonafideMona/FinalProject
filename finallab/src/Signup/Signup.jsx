@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
 // import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "./UserContext"; // adjust path if needed
 
-function Signup({ onSwitchToLogin }) {
+function Signup({ onSwitchToLogin, onLoginSuccess }) {
   const [accName, setAccName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +15,7 @@ function Signup({ onSwitchToLogin }) {
   const [fName, setFname] = useState("");
   const [lName, setLname] = useState("");
 
+  const { login } = useContext(UserContext);
   const validate = () => {
     const newErrors = {};
     if (!accName.trim()) newErrors.accName = "Account name is required";
@@ -190,21 +193,39 @@ function Signup({ onSwitchToLogin }) {
           const accName = fName;
           const email = decoded.email;
 
-          await fetch("http://localhost:8801/signup", {
+          // Call the dedicated Google signup endpoint
+          const res = await fetch("http://localhost:8801/google-signup", {
             method: "POST",
             headers: { "Content-type": "application/json" },
-            body: JSON.stringify({ fName, lName, accName, email, password: "" }),
+            body: JSON.stringify({ fName, lName, accName, email }),
           });
+          const data = await res.json();
 
-          // Store in sessionStorage if needed
-          sessionStorage.setItem("email", email);
-          sessionStorage.setItem("accName", accName);
-          sessionStorage.setItem("fName", fName);
-          sessionStorage.setItem("lName", lName);
-
+          if (res.ok) {
+            // Use context login to store in sessionStorage and context
+            if (data.accID && data.accName && data.email) {
+              // If using UserContext
+              if (typeof login === "function") {
+                login({
+                  accID: data.accID,
+                  accName: data.accName,
+                  email: data.email,
+                });
+              } if (onLoginSuccess) onLoginSuccess()
+                ;else {
+                // Fallback: store manually if context not available
+                sessionStorage.setItem("accID", data.accID);
+                sessionStorage.setItem("accName", data.accName);
+                sessionStorage.setItem("email", data.email);
+              }
+            }
+            setMessage(data.message || "Google signup/login successful");
+          } else {
+            setMessage(data.error || "Google signup/login failed");
+          }
         }}
         onError={() => {
-          console.log("Login Failed");
+          setMessage("Google Login Failed");
         }}
       />
 

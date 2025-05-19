@@ -3,7 +3,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useContext } from "react";
 import { UserContext } from "./UserContext"; // adjust path if needed
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+
 import HomePage from "../Pages/HomePage";
 
 function Login({ onSwitchToSignup, onLoginSuccess }) {
@@ -23,7 +23,6 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
     return newErrors;
   };
 
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,7 +147,7 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
           accName: data.accName,
           accID: data.accID,
         });
-        navigate("/");
+        if (onLoginSuccess) onLoginSuccess();
       } else {
         // Optionally handle error
         setMessage(data.error || "Google login failed");
