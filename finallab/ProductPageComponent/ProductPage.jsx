@@ -43,4 +43,4 @@ function ProductPage() {
   );
 }
 
-export default 
+export default ProductPage
