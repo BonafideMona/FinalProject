@@ -30,7 +30,7 @@ app.get("/tbl_accounts", (req, res) => {
 app.post("/signup", (req, res) => {
   const { fName, lName, accName, email, password } = req.body;
   const sql =
-    "INSERT INTO tbl_accounts(fName, lName, accName, email, password) VALUES (?,?,?,?,?)";
+    "INSERT INTO tbl_accounts(fName, lName, accName, email, password, created_At, updated_At) VALUES (?,?,?,?,?,CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
   db.query(sql, [fName, lName, accName, email, password], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     return res.json({ message: "Signup successful" });
