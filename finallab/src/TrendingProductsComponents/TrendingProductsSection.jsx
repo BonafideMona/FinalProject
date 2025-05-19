@@ -6,7 +6,7 @@ import { useCart } from "../contexts/CartContext"; // make sure path is correct
 export default function TrendingProductsSection() {
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState([]);
-  const { addToCart } = useCart(); // ✅ use global cart context
+  const { addToCart } = useCart(); 
 
   useEffect(() => {
     fetch("http://localhost:8801/get-trending-products")

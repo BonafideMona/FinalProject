@@ -12,9 +12,23 @@ import { UserContext } from "../Signup/UserContext";
 
 function NavigationBar() {
   const [authMode, setAuthMode] = useState(null);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { user, logout } = useContext(UserContext);
 
   const closeModal = () => setAuthMode(null);
+
+  const handleLogoutClick = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
+    logout();
+    setShowLogoutConfirm(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutConfirm(false);
+  };
 
   return (
     <div>
@@ -24,7 +38,7 @@ function NavigationBar() {
 
         <div className="flex items-center space-x-4">
           <Support />
-          <Cart /> {/* ✅ Now shows real-time cart info */}
+          <Cart />
 
           {user ? (
             <>
@@ -33,7 +47,7 @@ function NavigationBar() {
                 <Profile />
               </Link>
               <button
-                onClick={logout}
+                onClick={handleLogoutClick}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
               >
                 Logout
@@ -50,6 +64,7 @@ function NavigationBar() {
         </div>
       </div>
 
+      {/* Login / Signup Modal */}
       <Modal isOpen={authMode !== null} onClose={closeModal}>
         {authMode === "login" ? (
           <Login
@@ -59,6 +74,28 @@ function NavigationBar() {
         ) : (
           <Signup onSwitchToLogin={() => setAuthMode("login")} />
         )}
+      </Modal>
+
+      {/* Logout Confirmation Modal */}
+      <Modal isOpen={showLogoutConfirm} onClose={cancelLogout}>
+        <div className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Confirm Logout</h2>
+          <p className="mb-6">Are you sure you want to log out?</p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={cancelLogout}
+              className="px-4 py-2 rounded-md border border-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmLogout}
+              className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );
