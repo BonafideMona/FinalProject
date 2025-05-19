@@ -57,7 +57,15 @@ app.post("/login", (req, res) => {
     }
   });
 });
-// ...existing code...
+
+app.get("/products-by-category/:category", (req, res) => {
+  const { category } = req.params;
+  const sql = "SELECT * FROM tbl_products WHERE product_category = ? AND status = 'Y'";
+  db.query(sql, [category], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    return res.json({ products: result });
+  });
+});
 
 app.post("/google-login", (req, res) => {
   const { fName, lName, accName, email } = req.body;

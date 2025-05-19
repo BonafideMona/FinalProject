@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import Profile from "./Pages/Profile"; 
 import AddProductForm from "./Pages/AddProductForm";
+import ProductPage from "../ProductPageComponent/ProductPage";
 import React from "react";
 import { GoogleLogin } from '@react-oauth/google';
 export default function App() {
@@ -11,7 +12,7 @@ export default function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/profile" element={<Profile />} />
-
+          <Route path="/products/:category" element={<ProductPage />} />
 
 
           {/* Seller side */}
