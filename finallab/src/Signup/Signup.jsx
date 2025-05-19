@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function Signup({ onSwitchToLogin }) {
   const [accName, setAccName] = useState("");
@@ -10,6 +10,8 @@ function Signup({ onSwitchToLogin }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
+  const [fName, setFname] = useState("");
+  const [lName, setLname] = useState("");
 
   const validate = () => {
     const newErrors = {};
@@ -35,7 +37,7 @@ function Signup({ onSwitchToLogin }) {
       const res = await fetch("http://127.0.0.1:8801/signup", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ accName, email, password }),
+        body: JSON.stringify({ fName, lName, accName, email, password }),
       });
       const data = await res.json();
       setMessage(data.message || data.error);
@@ -83,6 +85,40 @@ function Signup({ onSwitchToLogin }) {
         />
         {errors.email && (
           <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+        )}
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          First Name
+        </label>
+        <input
+          type="text"
+          className={`w-full px-4 py-2 border ${
+            errors.fName ? "border-red-500" : "border-gray-300"
+          } rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          placeholder="Enter username"
+          value={fName}
+          onChange={(e) => setFname(e.target.value)}
+        />
+        {errors.fName && (
+          <p className="text-red-500 text-xs mt-1">{errors.fName}</p>
+        )}
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Last Name
+        </label>
+        <input
+          type="text"
+          className={`w-full px-4 py-2 border ${
+            errors.accName ? "border-red-500" : "border-gray-300"
+          } rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          placeholder="Enter username"
+          value={lName}
+          onChange={(e) => setLname(e.target.value)}
+        />
+        {errors.lName && (
+          <p className="text-red-500 text-xs mt-1">{errors.lName}</p>
         )}
       </div>
 
@@ -166,8 +202,6 @@ function Signup({ onSwitchToLogin }) {
           sessionStorage.setItem("fName", fName);
           sessionStorage.setItem("lName", lName);
 
-          if (onClose) onClose();
-          navigate("/");
         }}
         onError={() => {
           console.log("Login Failed");
