@@ -28,9 +28,15 @@ export function CartProvider({ children }) {
       }
     });
   };
+  // ✅ New function to remove a specific item by product_id
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter(item => item.product_id !== productId));
+  };
+
+  
 
   return (
-    <CartContext.Provider value={{ cartItems: cart, addToCart }}>
+    <CartContext.Provider value={{ cartItems: cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );

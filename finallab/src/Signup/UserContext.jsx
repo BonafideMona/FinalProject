@@ -26,6 +26,7 @@ export const UserProvider = ({ children }) => {
     // baguhin to if may ibang ipapasok sa sessionStorage gawing manually clear yung 3
     sessionStorage.clear();
     setUser(null);
+    window.location.reload();
   };
 
   return (
