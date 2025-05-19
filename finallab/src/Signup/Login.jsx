@@ -12,6 +12,7 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
 
+
   const { login } = useContext(UserContext);
 
   const validate = () => {
@@ -126,33 +127,41 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
         <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
-      <GoogleLogin
-        onSuccess={async (credentialResponse) => {
-          const decoded = jwtDecode(credentialResponse.credential);
-          const fName = decoded.given_name;
-          const lName = decoded.family_name;
-          const accName = fName;
-          const email = decoded.email;
+<GoogleLogin
+  onSuccess={async (credentialResponse) => {
+    const decoded = jwtDecode(credentialResponse.credential);
+    const fName = decoded.given_name;
+    const lName = decoded.family_name;
+    const accName = fName;
+    const email = decoded.email;
 
-          await fetch("http://localhost:8801/signup", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({ accName, email, password: "" }),
-          });
-
-          // Store in sessionStorage if needed
-          sessionStorage.setItem("email", email);
-          sessionStorage.setItem("accName", accName);
-          sessionStorage.setItem("fName", fName);
-          sessionStorage.setItem("lName", lName);
-
-          if (onLoginSuccess) onLoginSuccess();
-          navigate("/");
-        }}
-        onError={() => {
-          console.log("Login Failed");
-        }}
-      />
+    try {
+      const res = await fetch("http://localhost:8801/google-login", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ fName, lName, accName, email }),
+      });
+      const data = await res.json();
+      if (data.message === "Login successful") {
+        login({
+          email: data.email,
+          accName: data.accName,
+          accID: data.accID,
+        });
+        navigate("/");
+      } else {
+        // Optionally handle error
+        setMessage(data.error || "Google login failed");
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+      setMessage("Network error");
+    }
+  }}
+  onError={() => {
+    console.log("Login Failed");
+  }}
+/>
 
       {message && (
         <div className="text-center text-sm text-gray-800 mt-4 font-medium">

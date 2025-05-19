@@ -57,6 +57,51 @@ app.post("/login", (req, res) => {
     }
   });
 });
+// ...existing code...
+
+app.post("/google-login", (req, res) => {
+  const { fName, lName, accName, email } = req.body;
+  if (!email) return res.status(400).json({ error: "Email is required" });
+
+  // Check if user exists
+  const checkSql = "SELECT * FROM tbl_accounts WHERE email = ?";
+  db.query(checkSql, [email], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    if (result.length > 0) {
+      // User exists, return info
+      const user = result[0];
+      return res.json({
+        message: "Login successful",
+        accID: user.accID,
+        accName: user.accName,
+        email: user.email,
+      });
+    } else {
+      // User does not exist, create new
+      const insertSql =
+        "INSERT INTO tbl_accounts(fName, lName, accName, email, password) VALUES (?,?,?,?,?)";
+      db.query(
+        insertSql,
+        [fName, lName, accName, email, ""],
+        (err, insertResult) => {
+          if (err) return res.status(500).json({ error: err });
+          // Get the new user
+          const newUserSql = "SELECT * FROM tbl_accounts WHERE email = ?";
+          db.query(newUserSql, [email], (err, newUserResult) => {
+            if (err) return res.status(500).json({ error: err });
+            const user = newUserResult[0];
+            return res.json({
+              message: "Login successful",
+              accID: user.accID,
+              accName: user.accName,
+              email: user.email,
+            });
+          });
+        }
+      );
+    }
+  });
+});
 
 // Get products by accID (from query param)
 // 📦 Get products by accID
