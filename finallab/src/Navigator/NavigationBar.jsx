@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../Signup/UserContext";
 import Developers from "./Developers";
 
-function NavigationBar() {
+function NavigationBar({ showSearch = true, showDevelopers = true, showCart = true }) {
   const [authMode, setAuthMode] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { user, logout } = useContext(UserContext);
@@ -35,13 +35,20 @@ function NavigationBar() {
     <div>
       <div className="flex justify-between items-center mx-[50px] my-2">
         <Logo />
-        <Search />
+
+        {/* Conditionally render Search */}
+        {showSearch && <Search />}
 
         <div className="flex items-center space-x-4">
-          <Link to="/DeveloperPage">
-            <Developers />
-          </Link>
-          <Cart />
+          {/* Conditionally render Developers */}
+          {showDevelopers && (
+            <Link to="/DeveloperPage">
+              <Developers />
+            </Link>
+          )}
+
+          {/* Conditionally render Cart */}
+          {showCart && <Cart />}
 
           {user ? (
             <>
