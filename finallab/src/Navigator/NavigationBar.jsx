@@ -3,12 +3,13 @@ import Cart from "./Cart";
 import Logo from "./Logo";
 import Profile from "./Profile";
 import Search from "./Search";
-import Support from "./Support";
+import Support from "./Developers";
 import Modal from "../Signup/Modal";
 import Login from "../Signup/Login";
 import Signup from "../Signup/Signup";
 import { Link } from "react-router-dom";
 import { UserContext } from "../Signup/UserContext";
+import Developers from "./Developers";
 
 function NavigationBar() {
   const [authMode, setAuthMode] = useState(null);
@@ -37,7 +38,9 @@ function NavigationBar() {
         <Search />
 
         <div className="flex items-center space-x-4">
-          <Support />
+          <Link to="/DeveloperPage">
+            <Developers />
+          </Link>
           <Cart />
 
           {user ? (

@@ -4,6 +4,7 @@ import Profile from "./Pages/Profile";
 import AddProductForm from "./Pages/AddProductForm";
 import React from "react";
 import { GoogleLogin } from '@react-oauth/google';
+import DeveloperPage from "./Pages/DeveloperPage";
 export default function App() {
   return (
     <main>
@@ -11,6 +12,7 @@ export default function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/DeveloperPage" element={<DeveloperPage />} />
 
 
 
