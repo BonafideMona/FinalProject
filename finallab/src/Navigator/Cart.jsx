@@ -4,7 +4,7 @@ import { RiArrowDropDownFill } from "react-icons/ri";
 import { CartContext } from "../contexts/CartContext";
 
 function Cart() {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, removeFromCart } = useContext(CartContext);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef();
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -38,7 +38,7 @@ function Cart() {
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-md border z-50 p-4 max-h-96 overflow-y-auto">
+        <div className="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-md border z-50 p-4 max-h-96 overflow-y-auto">
           <h2 className="text-md font-semibold mb-2">Cart Items</h2>
           {cartItems.length === 0 ? (
             <p className="text-sm text-gray-500">Your cart is empty.</p>
@@ -46,16 +46,26 @@ function Cart() {
             <>
               <ul className="text-sm">
                 {cartItems.map((item) => (
-                  <li key={item.product_id} className="flex justify-between mb-2">
-                    <div>
-                      <p className="font-medium">{item.product_name}</p>
-                      <p className="text-gray-500 text-xs">
-                        {item.quantity} x ${item.price.toFixed(2)}
-                      </p>
+                  <li key={item.product_id} className="mb-2">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-medium">{item.product_name}</p>
+                        <p className="text-gray-500 text-xs">
+                          {item.quantity} x ${item.price.toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold">
+                          ${(item.quantity * item.price).toFixed(2)}
+                        </p>
+                        <button
+                          className="text-xs text-red-500 hover:underline mt-1"
+                          onClick={() => removeFromCart(item.product_id)}
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
-                    <p className="font-bold">
-                      ${(item.quantity * item.price).toFixed(2)}
-                    </p>
                   </li>
                 ))}
                 <hr className="my-2" />
@@ -64,12 +74,10 @@ function Cart() {
                   <span>${totalPrice.toFixed(2)}</span>
                 </li>
               </ul>
+
               <button
-                className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-semibold transition-colors"
-                onClick={() => {
-                  // You can navigate to a checkout page or trigger a modal here
-                  console.log("Proceeding to checkout...");
-                }}
+                className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-semibold"
+                onClick={() => console.log("Proceeding to checkout...")}
               >
                 Proceed to Checkout
               </button>
@@ -80,6 +88,5 @@ function Cart() {
     </div>
   );
 }
-
 
 export default Cart;
