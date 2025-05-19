@@ -9,7 +9,7 @@ function Profile() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   return (
-    <div className="mr-[100px] bg-gray-200 rounded-2xl">
+    <div className="mr-[10px] bg-gray-200 rounded-2xl">
       <GoPerson size={25} />
 
       <Modal isOpen={showSignupModal} onClose={() => setShowSignupModal(false)}>

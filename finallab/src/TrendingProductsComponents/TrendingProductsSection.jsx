@@ -1,37 +1,23 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import React from "react";
 import TrendingProductsBox from "./TrendingProductsBox";
+import { useCart } from "../contexts/CartContext"; // make sure path is correct
 
 export default function TrendingProductsSection() {
-  const products = [
-    {
-      id: 1,
-      name: "Veggies",
-      price: "18.00",
-      discount: "30%",
-      image:
-        "https://sunstarjuice.ir/wp-content/uploads/2018/08/For-web03-750x750.jpg",
-    },
-    {
-      id: 2,
-      name: "Fruits",
-      price: "18.00",
-      discount: "30%",
-    },
-    {
-      id: 3,
-      name: "Drinks",
-      price: "18.00",
-      discount: "30%",
-    },
-    {
-      id: 4,
-      name: "Snacks",
-      price: "10.00",
-      discount: "50%",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [quantities, setQuantities] = useState([]);
+  const { addToCart } = useCart(); // ✅ use global cart context
 
-  const [quantities, setQuantities] = useState(Array(products.length).fill(1));
+  useEffect(() => {
+    fetch("http://localhost:8801/get-trending-products")
+      .then((res) => res.json())
+      .then((data) => {
+        const fetchedProducts = data.products || [];
+        setProducts(fetchedProducts);
+        setQuantities(Array(fetchedProducts.length).fill(1));
+      })
+      .catch((err) => console.error("Failed to fetch products:", err));
+  }, []);
 
   const increment = (index) => {
     const newQuantities = [...quantities];
@@ -53,14 +39,14 @@ export default function TrendingProductsSection() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
         {products.map((product, index) => (
           <TrendingProductsBox
-            key={product.id}
-            name={product.name}
+            key={product.product_id}
+            name={product.product_name}
             price={product.price}
-            discount={product.discount}
-            image={product.image}
+            image={`http://localhost:8801${product.image_url}`}
             quantity={quantities[index]}
             onIncrement={() => increment(index)}
             onDecrement={() => decrement(index)}
+            onAddToCart={() => addToCart(product, quantities[index])} // ✅ uses context
           />
         ))}
       </div>

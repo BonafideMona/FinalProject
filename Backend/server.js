@@ -77,6 +77,47 @@ const upload = multer({ storage });
 const pathToAssets = path.join(__dirname, "../finallab/src/assets");
 app.use("/assets", express.static(pathToAssets));
 
+// Get trending products
+app.get("/get-trending-products", (req, res) => {
+  const query = `
+    SELECT 
+      product_id, 
+      product_name, 
+      price, 
+      image_url 
+    FROM tbl_products 
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching trending products:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json({ products: results });
+  });
+});
+
+// add to cart 
+
+app.post('/add-to-cart', (req, res) => {
+  const { accID, product_id, quantity } = req.body;
+
+  const query = `
+    INSERT INTO tbl_carts (accID, product_id, quantity)
+    VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE quantity = quantity + ?`;
+
+  db.query(query, [accID, product_id, quantity, quantity], (err, result) => {
+    if (err) {
+      console.error("Failed to add to cart:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    res.json({ message: "Item added to cart" });
+  });
+});
+
 
 // GET products by accID
 app.get("/get-products", (req, res) => {

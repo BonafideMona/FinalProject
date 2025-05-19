@@ -8,7 +8,7 @@ import Modal from "../Signup/Modal";
 import Login from "../Signup/Login";
 import Signup from "../Signup/Signup";
 import { Link } from "react-router-dom";
-import { UserContext } from "../Signup/UserContext"; // adjust path as needed
+import { UserContext } from "../Signup/UserContext";
 
 function NavigationBar() {
   const [authMode, setAuthMode] = useState(null);
@@ -24,11 +24,14 @@ function NavigationBar() {
 
         <div className="flex items-center space-x-4">
           <Support />
-          <Cart />
+          <Cart /> {/* ✅ Now shows real-time cart info */}
 
           {user ? (
             <>
               <span className="text-gray-700 font-medium">{user.accName}</span>
+              <Link to="/profile">
+                <Profile />
+              </Link>
               <button
                 onClick={logout}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"

@@ -7,6 +7,8 @@ import Signup from "../Signup/Signup";
 import NavigationBar from "../Navigator/NavigationBar";
 import ShopByDept from "../Navigator/ShopByDept";
 import Modal from "../Signup/Modal";
+import { CartProvider } from "../contexts/CartContext";
+
 
 function HomePage() {
   useEffect(() => {
@@ -18,13 +20,16 @@ function HomePage() {
   return (
     <div>
       <main>
+        <CartProvider>
         <NavigationBar />
+        
         <ShopByDept />
 
         <TrendingProductsSection />
         <CategorySection />
         <NewlyArrived />
         <Modal />
+        </CartProvider>
       </main>
     </div>
   );
