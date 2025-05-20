@@ -207,6 +207,31 @@ app.get("/get-trending-products", (req, res) => {
 });
 
 
+// Get newly arrived products
+app.get("/get-newly-arrived-products", (req, res) => {
+  const query = `
+    SELECT 
+      product_id, 
+      product_name, 
+      price, 
+      image_url, 
+      accID,
+      created_At
+    FROM tbl_products 
+    WHERE status = 'Y'
+    ORDER BY created_At DESC
+    LIMIT 6
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching newly arrived products:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    res.json({ products: results });
+  });
+});
 
 // GET products by accID
 app.get("/get-products", (req, res) => {

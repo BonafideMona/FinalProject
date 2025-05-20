@@ -7,10 +7,13 @@ import React from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import DeveloperPage from "./Pages/DeveloperPage";
 import CheckoutPage from "./Pages/CheckOutPage";
+import { UserProvider } from "./Signup/UserContext";
+
 export default function App() {
   return (
     <main>
       <BrowserRouter>
+      <UserProvider>
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/profile" element={<Profile />} />
@@ -28,6 +31,7 @@ export default function App() {
           <Route path ="AddProductForm" element={<AddProductForm/>}/>
 
         </Routes>
+        </UserProvider>
       </BrowserRouter>
     </main>
   );

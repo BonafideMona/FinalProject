@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProductsTable from "./ProductsTable";
 import { useNavigate } from "react-router-dom";
+import NavigationBar from "../Navigator/NavigationBar";
 
 function AddProductForm() {
   const [productName, setProductName] = useState("");
@@ -119,13 +120,20 @@ function AddProductForm() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full p-10 bg-[#fefaf4] min-h-screen">
+  <div className="w-full bg-[#fefaf4] min-h-screen">
+    {/* Navbar with no spacing */}
+    <div className="w-full">
+      <NavigationBar showSearch={false} showDevelopers={false} showCart={false} />
+    </div>
+
+    {/* Content with padding */}
+    <div className="p-10">
       <button
-      className="mb-6 mr-4 bg-gray-300 text-[#5b4e40] px-6 py-2 rounded-xl shadow hover:bg-gray-400 transition"
-      onClick={() => navigate("/profile")}
-    >
-      ← Back to Profile
-    </button>
+        className="mb-6 mr-4 bg-gray-300 text-[#5b4e40] px-6 py-2 rounded-xl shadow hover:bg-gray-400 transition"
+        onClick={() => navigate("/profile")}
+      >
+        ← Back to Profile
+      </button>
 
       <button
         className="mb-6 bg-[#5b4e40] text-white px-6 py-2 rounded-xl shadow hover:bg-[#4a3e34] transition"
@@ -263,6 +271,7 @@ function AddProductForm() {
         onDelete={handleDelete}
         fetchError={fetchError}
       />
+    </div>
     </div>
   );
 }

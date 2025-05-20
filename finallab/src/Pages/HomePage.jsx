@@ -1,5 +1,5 @@
 import CategorySection from "../CategoryComponents/CategorySection";
-import NewlyArrived from "../NewlyArrived";
+import NewlyArrived from "../TrendingProductsComponents/NewlyArrived";
 import React from "react";
 import TrendingProductsSection from "../TrendingProductsComponents/TrendingProductsSection";
 import { useEffect } from "react";
