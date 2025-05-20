@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NavigationBar from "../Navigator/NavigationBar";
-
+import { GoPerson } from "react-icons/go" 
 function Profile() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Read individual fields from sessionStorage
+
     const name = sessionStorage.getItem("accName");
     const email = sessionStorage.getItem("email");
     const accID = sessionStorage.getItem("accID");
@@ -15,9 +15,9 @@ function Profile() {
       setUser({
         name: name,
         email: email,
-        joined: "2025", // static or you can fetch from backend
-        role: "User",   // static role
-        avatar: "<default_avatar_url>",     // optional default
+        joined: "2025", 
+        role: "User",   
+        avatar: "",
       });
     }
   }, []);
@@ -47,11 +47,17 @@ function Profile() {
 
       {/* Profile Card */}
       <div className="bg-white border border-[#d6c9b4] rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6 mb-8">
-        <img
-          src={user.avatar || "https://via.placeholder.com/150"}
-          alt="Avatar"
-          className="w-28 h-28 rounded-full border-4 border-[#e0d2ba] object-cover"
-        />
+          {user.avatar ? (
+            <img
+              src={user.avatar}
+              alt="Avatar"
+              className="w-28 h-28 rounded-full border-4 border-[#e0d2ba] object-cover"
+            />
+          ) : (
+            <div className="w-28 h-28 flex items-center justify-center rounded-full border-4 border-[#e0d2ba] bg-[#e0d2ba] text-[#5b4e40] text-6xl">
+              <GoPerson />
+            </div>
+          )}
         <div>
           <h2 className="text-2xl font-bold text-[#5b4e40]">{user.name}</h2>
           <p className="text-[#7c5f41]">{user.email}</p>
