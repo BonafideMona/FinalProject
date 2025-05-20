@@ -2,8 +2,10 @@ import { useContext, useState, useRef, useEffect } from "react";
 import React from "react";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import { CartContext } from "../contexts/CartContext";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
+    const navigate = useNavigate();
   const { cartItems, removeFromCart } = useContext(CartContext);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef();
@@ -48,6 +50,12 @@ function Cart() {
                 {cartItems.map((item) => (
                   <li key={item.product_id} className="mb-2">
                     <div className="flex justify-between items-start">
+                        <img
+                      src={`http://localhost:8801${item.image_url}`}
+                      alt={item.product_name}
+                      className="w-12 h-12 object-cover rounded"
+                    />
+
                       <div>
                         <p className="font-medium">{item.product_name}</p>
                         <p className="text-gray-500 text-xs">
@@ -77,7 +85,7 @@ function Cart() {
 
               <button
                 className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-semibold"
-                onClick={() => console.log("Proceeding to checkout...")}
+                onClick={() => navigate("/checkoutpage")}
               >
                 Proceed to Checkout
               </button>

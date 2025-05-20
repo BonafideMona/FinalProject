@@ -4,6 +4,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 
+
 const app = express();
 app.use(cors());
 
@@ -26,6 +27,7 @@ app.get("/tbl_accounts", (req, res) => {
     return res.json(result);
   });
 });
+
 
 app.post("/signup", (req, res) => {
   const { fName, lName, accName, email, password } = req.body;
@@ -51,6 +53,7 @@ app.post("/login", (req, res) => {
         accID: result[0].accID,
         accName: result[0].accName,
         email: result[0].email,
+        address: result[0].address,
       });
     } else {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -185,7 +188,8 @@ app.get("/get-trending-products", (req, res) => {
       product_id, 
       product_name, 
       price, 
-      image_url 
+      image_url, 
+      accID
     FROM tbl_products 
     WHERE status = 'Y'
     ORDER BY price ASC
@@ -340,6 +344,85 @@ app.delete("/delete-product/:id", (req, res) => {
     return res.json({ message: "Product deleted successfully" });
   });
 });
+
+// 🆕 CREATE ORDER endpoint
+app.post("/create-order", (req, res) => {
+  const { accID, address, total_amount, quantity, items } = req.body;
+
+  if (!accID || !address || !items || items.length === 0) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  db.beginTransaction((err) => {
+    if (err) return res.status(500).json({ message: "Transaction start error", error: err });
+
+    const orderSql = `
+      INSERT INTO tbl_orders (accID, address, quantity, total_amount, status)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+    const orderValues = [accID, address, quantity, total_amount, "Pending"];
+
+    db.query(orderSql, orderValues, (err, result) => {
+      if (err) {
+        return db.rollback(() => res.status(500).json({ message: "Order insert error", error: err }));
+      }
+
+      const orderID = result.insertId;
+
+      const itemSql = `
+        INSERT INTO tbl_order_items (order_id, product_id, seller_accID, price)
+        VALUES ?
+      `;
+      const itemValues = items.map((item) => [
+        orderID,
+        item.product_id,
+        item.seller_accID,
+        item.price,
+      ]);
+
+      db.query(itemSql, [itemValues], (err) => {
+        if (err) {
+          return db.rollback(() => res.status(500).json({ message: "Items insert error", error: err }));
+        }
+
+        // 🔁 Update product quantities in tbl_products
+        const updatePromises = items.map((item) => {
+          return new Promise((resolve, reject) => {
+            const updateSql = `
+              UPDATE tbl_products
+              SET avail_qty = avail_qty - ?
+              WHERE product_id = ? AND avail_qty >= ?
+            `;
+            db.query(updateSql, [item.quantity, item.product_id, item.quantity], (err, result) => {
+              if (err) return reject(err);
+              if (result.affectedRows === 0) {
+                return reject(new Error(`Not enough stock for product_id ${item.product_id}`));
+              }
+              resolve();
+            });
+          });
+        });
+
+        Promise.all(updatePromises)
+          .then(() => {
+            db.commit((err) => {
+              if (err) {
+                return db.rollback(() => res.status(500).json({ message: "Commit failed", error: err }));
+              }
+              res.status(201).json({ message: "Order placed successfully", orderID });
+            });
+          })
+          .catch((err) => {
+            db.rollback(() => {
+              res.status(400).json({ message: "Inventory update failed", error: err.message });
+            });
+          });
+      });
+    });
+  });
+});
+
+
 
 app.listen(8801, () => {
   console.log("listening");

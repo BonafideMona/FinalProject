@@ -45,6 +45,7 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
           email: data.email,
           accName: data.accName,
           accID: data.accID,
+          address: data.address
         });
         if (onLoginSuccess) onLoginSuccess();
       }

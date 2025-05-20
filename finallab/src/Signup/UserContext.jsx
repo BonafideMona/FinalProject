@@ -1,6 +1,7 @@
 import {  createContext, useState, useEffect } from "react";
 import React from "react";
 import { jwtDecode } from "jwt-decode";
+
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -10,8 +11,9 @@ export const UserProvider = ({ children }) => {
     const accID = sessionStorage.getItem("accID");
     const email = sessionStorage.getItem("email");
     const accName = sessionStorage.getItem("accName");
-    if (accID && email && accName) {
-      setUser({accID, email, accName});
+    const address = sessionStorage.getItem("address");
+    if (accID && email && accName && address) {
+      setUser({accID, email, accName, address});
     }
   }, []);
 
@@ -19,6 +21,7 @@ export const UserProvider = ({ children }) => {
     sessionStorage.setItem("email", userData.email);
     sessionStorage.setItem("accName", userData.accName);
     sessionStorage.setItem("accID", userData.accID);
+    sessionStorage.setItem("address", userData.address);
     setUser(userData);
   };
 

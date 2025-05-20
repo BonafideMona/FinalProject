@@ -6,6 +6,7 @@ import ProductPage from "../ProductPageComponent/ProductPage";
 import React from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import DeveloperPage from "./Pages/DeveloperPage";
+import CheckoutPage from "./Pages/CheckOutPage";
 export default function App() {
   return (
     <main>
@@ -16,6 +17,9 @@ export default function App() {
           <Route path="/products/:category" element={<ProductPage />} />
           <Route path="/DeveloperPage" element={<DeveloperPage />} />
 
+        
+          {/* Checkout Page */}
+          <Route path="/checkoutpage" element={<CheckoutPage/>} />
 
 
           {/* Seller side */}
