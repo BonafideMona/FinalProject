@@ -4,7 +4,6 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 
-
 const app = express();
 app.use(cors());
 
@@ -27,7 +26,6 @@ app.get("/tbl_accounts", (req, res) => {
     return res.json(result);
   });
 });
-
 
 app.post("/signup", (req, res) => {
   const { fName, lName, accName, email, password } = req.body;
@@ -63,7 +61,8 @@ app.post("/login", (req, res) => {
 
 app.get("/products-by-category/:category", (req, res) => {
   const { category } = req.params;
-  const sql = "SELECT * FROM tbl_products WHERE product_category = ? AND status = 'Y'";
+  const sql =
+    "SELECT * FROM tbl_products WHERE product_category = ? AND status = 'Y'";
   db.query(sql, [category], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     return res.json({ products: result });
@@ -72,7 +71,8 @@ app.get("/products-by-category/:category", (req, res) => {
 
 app.post("/google-signup", (req, res) => {
   const { fName, lName, email } = req.body;
-  if (!email || !fName || !lName) return res.status(400).json({ error: "Missing fields" });
+  if (!email || !fName || !lName)
+    return res.status(400).json({ error: "Missing fields" });
 
   const accName = fName; // accName is fName for Google signup
 
@@ -115,8 +115,6 @@ app.post("/google-signup", (req, res) => {
     }
   });
 });
-
-
 
 app.post("/google-login", (req, res) => {
   const { fName, lName, accName, email } = req.body;
@@ -171,10 +169,12 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
+    cb(
+      null,
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+    );
   },
 });
-
 
 const upload = multer({ storage });
 
@@ -199,15 +199,13 @@ app.get("/get-trending-products", (req, res) => {
 
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching trending products:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
+      console.error("Error fetching trending products:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
 
     res.json({ products: results });
   });
 });
-
-
 
 // Get newly arrived products
 app.get("/get-newly-arrived-products", (req, res) => {
@@ -227,8 +225,8 @@ app.get("/get-newly-arrived-products", (req, res) => {
 
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching newly arrived products:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
+      console.error("Error fetching newly arrived products:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
 
     res.json({ products: results });
@@ -301,13 +299,8 @@ app.post("/add-product", upload.single("image"), (req, res) => {
 // UPDATE product (with optional image upload)
 app.put("/update-product/:id", upload.single("image"), (req, res) => {
   const { id } = req.params;
-  const {
-    productName,
-    category,
-    unitMeasure,
-    availableQuantity,
-    price,
-  } = req.body;
+  const { productName, category, unitMeasure, availableQuantity, price } =
+    req.body;
 
   if (
     !productName ||
@@ -381,7 +374,10 @@ app.post("/create-order", (req, res) => {
   }
 
   db.beginTransaction((err) => {
-    if (err) return res.status(500).json({ message: "Transaction start error", error: err });
+    if (err)
+      return res
+        .status(500)
+        .json({ message: "Transaction start error", error: err });
 
     const orderSql = `
       INSERT INTO tbl_orders (accID, address, quantity, total_amount, status)
@@ -391,13 +387,15 @@ app.post("/create-order", (req, res) => {
 
     db.query(orderSql, orderValues, (err, result) => {
       if (err) {
-        return db.rollback(() => res.status(500).json({ message: "Order insert error", error: err }));
+        return db.rollback(() =>
+          res.status(500).json({ message: "Order insert error", error: err })
+        );
       }
 
       const orderID = result.insertId;
 
       const itemSql = `
-        INSERT INTO tbl_order_items (order_id, product_id, seller_accID, price)
+        INSERT INTO tbl_order_items (order_id, product_id, seller_accID, price, quantity)
         VALUES ?
       `;
       const itemValues = items.map((item) => [
@@ -405,11 +403,14 @@ app.post("/create-order", (req, res) => {
         item.product_id,
         item.seller_accID,
         item.price,
+        item.quantity,
       ]);
 
       db.query(itemSql, [itemValues], (err) => {
         if (err) {
-          return db.rollback(() => res.status(500).json({ message: "Items insert error", error: err }));
+          return db.rollback(() =>
+            res.status(500).json({ message: "Items insert error", error: err })
+          );
         }
 
         // 🔁 Update product quantities in tbl_products
@@ -420,13 +421,21 @@ app.post("/create-order", (req, res) => {
               SET avail_qty = avail_qty - ?
               WHERE product_id = ? AND avail_qty >= ?
             `;
-            db.query(updateSql, [item.quantity, item.product_id, item.quantity], (err, result) => {
-              if (err) return reject(err);
-              if (result.affectedRows === 0) {
-                return reject(new Error(`Not enough stock for product_id ${item.product_id}`));
+            db.query(
+              updateSql,
+              [item.quantity, item.product_id, item.quantity],
+              (err, result) => {
+                if (err) return reject(err);
+                if (result.affectedRows === 0) {
+                  return reject(
+                    new Error(
+                      `Not enough stock for product_id ${item.product_id}`
+                    )
+                  );
+                }
+                resolve();
               }
-              resolve();
-            });
+            );
           });
         });
 
@@ -434,14 +443,23 @@ app.post("/create-order", (req, res) => {
           .then(() => {
             db.commit((err) => {
               if (err) {
-                return db.rollback(() => res.status(500).json({ message: "Commit failed", error: err }));
+                return db.rollback(() =>
+                  res.status(500).json({ message: "Commit failed", error: err })
+                );
               }
-              res.status(201).json({ message: "Order placed successfully", orderID });
+              res
+                .status(201)
+                .json({ message: "Order placed successfully", orderID });
             });
           })
           .catch((err) => {
             db.rollback(() => {
-              res.status(400).json({ message: "Inventory update failed", error: err.message });
+              res
+                .status(400)
+                .json({
+                  message: "Inventory update failed",
+                  error: err.message,
+                });
             });
           });
       });
@@ -449,6 +467,75 @@ app.post("/create-order", (req, res) => {
   });
 });
 
+app.get("/get-seller-orders", (req, res) => {
+  const { accID } = req.query;
+  if (!accID) return res.status(400).json({ error: "accID is required" });
+
+  const sql = `
+    SELECT 
+      o.order_id,
+      o.accID AS buyer_accID,
+      a.accName AS buyer_name,
+      o.address AS delivery_address,
+      o.total_amount,
+      o.order_date,
+      o.status AS order_status,
+
+      oi.quantity,
+      oi.price AS item_price,
+
+      p.product_id,
+      p.product_name,
+      p.product_category,
+      p.unit_measure,
+      p.image_url
+
+    FROM tbl_order_items oi
+    JOIN tbl_orders o ON oi.order_id = o.order_id
+    JOIN tbl_products p ON oi.product_id = p.product_id
+    JOIN tbl_accounts a ON o.accID = a.accID
+    WHERE oi.seller_accID = ?
+    ORDER BY o.order_date DESC;
+  `;
+
+  db.query(sql, [accID], (err, result) => {
+    if (err) {
+      console.error("Error fetching seller orders:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    return res.json({ orders: result });
+  });
+});
+// Get order history for a buyer
+app.get("/get-order-history", (req, res) => {
+  const { accID } = req.query;
+  if (!accID) return res.status(400).json({ error: "accID is required" });
+
+  const sql =
+    "SELECT o.order_id, o.order_date, o.status AS order_status, o.total_amount, o.address, oi.quantity, oi.price, p.product_id, p.product_name, p.product_category, p.unit_measure, p.image_url, s.accName AS seller_name FROM tbl_orders o JOIN tbl_order_items oi ON o.order_id = oi.order_id JOIN tbl_products p ON oi.product_id = p.product_id JOIN tbl_accounts s ON oi.seller_accID = s.accID WHERE o.accID = ? ORDER BY o.order_date DESC";
+
+  db.query(sql, [accID], (err, result) => {
+    if (err) {
+      console.error("Error fetching order history:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    return res.json({ orders: result });
+  });
+});
+
+app.put("/update-order-status", (req, res) => {
+  const { order_id, status } = req.body;
+  if (!order_id || !status) return res.status(400).json({ error: "Missing order_id or status" });
+
+  const sql = "UPDATE tbl_orders SET status = ? WHERE order_id = ?";
+  db.query(sql, [status, order_id], (err, result) => {
+    if (err) {
+      console.error("Error updating order status:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    return res.json({ message: "Order status updated successfully" });
+  });
+});
 
 
 app.listen(8801, () => {

@@ -81,17 +81,41 @@ function Profile() {
           </Link>
         </div>
 
-        <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
-          <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Order History</h3>
-          <p className="text-sm text-[#7c5f41] mb-3">
-            View your past orders and transactions.
-          </p>
-          <Link
-            to="/orders"
-            className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
-          >
-            View Order History
-          </Link>
+        {/* Action Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Manage Products</h3>
+            <p className="text-sm text-[#7c5f41] mb-3">
+              Add or manage your agricultural products.
+            </p>
+            <Link to="/AddProductForm" className="text-sm text-blue-600 hover:underline">
+              ➤ Go to Product Management
+            </Link>
+          </div>
+
+          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Order History</h3>
+            <p className="text-sm text-[#7c5f41] mb-3">
+              View your past orders and transactions.
+            </p>
+            <Link to="/orderhistorypage" className="text-sm text-blue-600 hover:underline">
+              ➤ View Order History
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Manage Orders</h3>
+            <p className="text-sm text-[#7c5f41] mb-3">
+              Manage order products.
+            </p>
+            <Link to="/orderpage" className="text-sm text-blue-600 hover:underline">
+              ➤ Go to Order Management
+            </Link>
+          </div>
+
+        
         </div>
       </div>
     </div>
