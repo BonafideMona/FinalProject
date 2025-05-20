@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProductsTable from "./ProductsTable";
 import { useNavigate } from "react-router-dom";
+import NavigationBar from "../Navigator/NavigationBar";
 
 function AddProductForm() {
   const [productName, setProductName] = useState("");
@@ -119,13 +120,20 @@ function AddProductForm() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full p-10 bg-[#fefaf4] min-h-screen">
+  <div className="w-full bg-[#fefaf4] min-h-screen">
+    {/* Navbar with no spacing */}
+    <div className="w-full">
+      <NavigationBar showSearch={false} showDevelopers={false} showCart={false} />
+    </div>
+
+    {/* Content with padding */}
+    <div className="p-10">
       <button
-      className="mb-6 mr-4 bg-gray-300 text-[#5b4e40] px-6 py-2 rounded-xl shadow hover:bg-gray-400 transition"
-      onClick={() => navigate("/profile")}
-    >
-      ← Back to Profile
-    </button>
+        className="mb-6 mr-4 bg-gray-300 text-[#5b4e40] px-6 py-2 rounded-xl shadow hover:bg-gray-400 transition"
+        onClick={() => navigate("/profile")}
+      >
+        ← Back to Profile
+      </button>
 
       <button
         className="mb-6 bg-[#5b4e40] text-white px-6 py-2 rounded-xl shadow hover:bg-[#4a3e34] transition"
@@ -136,7 +144,7 @@ function AddProductForm() {
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-xl border border-[#d6c9b4]">
+          <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-xl border border-[#5b4e40]">
             <h2 className="text-2xl font-bold text-[#5b4e40] mb-6">
               {editMode ? "Update Product" : "Add Product"}
             </h2>
@@ -170,7 +178,7 @@ function AddProductForm() {
                     value={value}
                     step={step}
                     onChange={(e) => onChange(e.target.value)}
-                    className="w-full border border-[#d6c9b4] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b3a18b]"
+                    className="w-full border border-[#b3a18b] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5b4e40]"
                   />
                 </div>
               ))}
@@ -263,6 +271,7 @@ function AddProductForm() {
         onDelete={handleDelete}
         fetchError={fetchError}
       />
+    </div>
     </div>
   );
 }

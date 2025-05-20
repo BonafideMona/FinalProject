@@ -49,31 +49,15 @@ function NavigationBar({
             </Link>
           )}
 
-          {showCart && <Cart />}
+          {showCart && user && <Cart />}
 
-          {user ? (
-            <>
-              <span className="text-sm font-medium text-[#5b4e40]">
-                {user.accName}
-              </span>
-              <Link to="/profile">
-                <Profile />
-              </Link>
-              <button
-                onClick={() => setShowLogoutConfirm(true)}
-                className="text-sm px-4 py-2 rounded-md bg-[#a1663b] text-white hover:bg-[#7f4f2f] transition"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={() => setAuthMode("login")}
-              className="text-sm px-4 py-2 rounded-md bg-[#5b4e40] text-white hover:bg-[#4a3f35] transition"
-            >
-              Login
-            </button>
+          {user && (
+            <span className="text-sm font-medium text-[#5b4e40]">
+              {user.accName}
+            </span>
           )}
+          <Profile />
+
         </div>
       </div>
 

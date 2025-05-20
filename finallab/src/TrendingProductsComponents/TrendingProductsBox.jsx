@@ -21,7 +21,7 @@ export default function TrendingProductsBox({
 
       <h3 className="text-sm font-medium truncate mb-1">{name}</h3>
       <p className="text-sm font-semibold text-[#3d2f24] mb-2">
-        ${Number(price).toFixed(2)}
+        ₱{Number(price).toFixed(2)}
       </p>
 
       <div className="flex items-center justify-center gap-2 mb-3">
