@@ -5,7 +5,6 @@ import TrendingProductsSection from "../TrendingProductsComponents/TrendingProdu
 import { useEffect } from "react";
 import Signup from "../Signup/Signup";
 import NavigationBar from "../Navigator/NavigationBar";
-import ShopByDept from "../Navigator/ShopByDept";
 import Modal from "../Signup/Modal";
 import { CartProvider } from "../contexts/CartContext";
 
@@ -21,14 +20,11 @@ function HomePage() {
     <div>
       <main>
         <CartProvider>
-        <NavigationBar />
-        
-        <ShopByDept />
-
-        <TrendingProductsSection />
-        <CategorySection />
-        <NewlyArrived />
-        <Modal />
+          <NavigationBar />
+          <TrendingProductsSection />
+          <CategorySection />
+          <NewlyArrived />
+          <Modal />
         </CartProvider>
       </main>
     </div>
