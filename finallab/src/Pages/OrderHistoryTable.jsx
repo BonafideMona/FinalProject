@@ -5,9 +5,7 @@ function OrderHistoryTable({ accID }) {
   const [fetchError, setFetchError] = useState("");
 
   useEffect(() => {
-        const accID = sessionStorage.getItem("accID");
-      console.log("Fetching orders for accID:", accID);
-
+    const accID = sessionStorage.getItem("accID");
     if (!accID) return;
 
     fetch(`http://localhost:8801/get-order-history?accID=${accID}`)
@@ -25,7 +23,6 @@ function OrderHistoryTable({ accID }) {
       });
   }, [accID]);
 
-  console.log(orders)
   return (
     <div className="mt-6">
       <h2 className="text-lg font-semibold mb-2">Order History</h2>
@@ -65,10 +62,18 @@ function OrderHistoryTable({ accID }) {
                 <td className="border px-4 py-2">{order.product_name}</td>
                 <td className="border px-4 py-2">{order.product_category}</td>
                 <td className="border px-4 py-2">{order.unit_measure}</td>
-                <td className="border px-4 py-2 text-center">{order.quantity}</td>
-                <td className="border px-4 py-2 text-right">${Number(order.price).toFixed(2)}</td>
-                <td className="border px-4 py-2 text-center">{new Date(order.order_date).toLocaleDateString()}</td>
-                <td className="border px-4 py-2 text-center">{order.order_status}</td>
+                <td className="border px-4 py-2 text-center">
+                  {order.quantity}
+                </td>
+                <td className="border px-4 py-2 text-right">
+                  ${Number(order.price).toFixed(2)}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {new Date(order.order_date).toLocaleDateString()}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {order.order_status}
+                </td>
               </tr>
             ))
           ) : (
