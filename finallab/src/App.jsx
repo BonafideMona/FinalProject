@@ -7,6 +7,8 @@ import React from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import DeveloperPage from "./Pages/DeveloperPage";
 import CheckoutPage from "./Pages/CheckOutPage";
+import SellerOrdersTable from "./Pages/SellersOrderTable";
+import OrderHistoryTable from "./Pages/OrderHistoryTable";
 import { UserProvider } from "./Signup/UserContext";
 
 export default function App() {
@@ -26,6 +28,8 @@ export default function App() {
 
 
           {/* Seller side */}
+          <Route path="/orderpage" element={<SellerOrdersTable/>} />
+          <Route path="orderhistorypage" element={<OrderHistoryTable/>}/>
 
           {/* Add product form */}
           <Route path ="AddProductForm" element={<AddProductForm/>}/>
