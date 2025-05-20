@@ -1,6 +1,10 @@
 import {  createContext, useState, useEffect } from "react";
 import React from "react";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 export const UserContext = createContext();
 
@@ -25,11 +29,12 @@ export const UserProvider = ({ children }) => {
     setUser(userData);
   };
 
+ const navigate = useNavigate();
+
   const logout = () => {
-    // baguhin to if may ibang ipapasok sa sessionStorage gawing manually clear yung 3
     sessionStorage.clear();
     setUser(null);
-    window.location.reload();
+    navigate("/");  // redirect to home page on logout
   };
 
   return (

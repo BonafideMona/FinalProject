@@ -13,11 +13,9 @@ const CLIENT_ID =
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={CLIENT_ID}>
-      <UserProvider>
-        <CartProvider>   {/* Wrap App with CartProvider here */}
+        <CartProvider>   
           <App />
         </CartProvider>
-      </UserProvider>
     </GoogleOAuthProvider>
   </StrictMode>
 );
