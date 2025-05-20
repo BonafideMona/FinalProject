@@ -10,7 +10,11 @@ import Signup from "../Signup/Signup";
 import { Link } from "react-router-dom";
 import { UserContext } from "../Signup/UserContext";
 
-function NavigationBar({ showSearch = true, showDevelopers = true, showCart = true }) {
+function NavigationBar({
+  showSearch = true,
+  showDevelopers = true,
+  showCart = true,
+}) {
   const [authMode, setAuthMode] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { user, logout } = useContext(UserContext);
@@ -70,7 +74,10 @@ function NavigationBar({ showSearch = true, showDevelopers = true, showCart = tr
             onLoginSuccess={closeModal}
           />
         ) : (
-          <Signup onSwitchToLogin={() => setAuthMode("login")} />
+          <Signup
+            onSwitchToLogin={() => setAuthMode("login")}
+            onLoginSuccess={closeModal}
+          />
         )}
       </Modal>
 
