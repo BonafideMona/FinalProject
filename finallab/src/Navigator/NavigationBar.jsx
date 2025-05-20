@@ -28,12 +28,21 @@ function NavigationBar({
 
   return (
     <header className="bg-[#fefaf4] border-b border-[#d6c9b4] shadow-sm">
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-3">
-        <Logo />
+      <div className="max-w-screen-xl mx-auto px-6 py-3 flex items-center justify-between">
+        {/* Left Section: Logo */}
+        <div className="flex items-center gap-6">
+          <Logo />
+        </div>
 
-        {showSearch && <Search />}
+        {/* Center Section: Search */}
+        {showSearch && (
+          <div className="flex-1 px-6">
+            <Search />
+          </div>
+        )}
 
-        <div className="flex items-center gap-4">
+        {/* Right Section: Actions */}
+        <div className="flex items-center gap-4 whitespace-nowrap">
           {showDevelopers && (
             <Link to="/DeveloperPage">
               <Developers />
@@ -44,7 +53,9 @@ function NavigationBar({
 
           {user ? (
             <>
-              <span className="text-sm font-medium text-[#5b4e40]">{user.accName}</span>
+              <span className="text-sm font-medium text-[#5b4e40]">
+                {user.accName}
+              </span>
               <Link to="/profile">
                 <Profile />
               </Link>

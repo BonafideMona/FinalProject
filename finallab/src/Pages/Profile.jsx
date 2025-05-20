@@ -1,18 +1,77 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NavigationBar from "../Navigator/NavigationBar";
 
 function Profile() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Read individual fields from sessionStorage
+    const name = sessionStorage.getItem("accName");
+    const email = sessionStorage.getItem("email");
+    const accID = sessionStorage.getItem("accID");
+
+    if (name && email && accID) {
+      setUser({
+        name: name,
+        email: email,
+        joined: "2025", // static or you can fetch from backend
+        role: "User",   // static role
+        avatar: "",     // optional default
+      });
+    }
+  }, []);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#fefaf4] flex justify-center items-center text-[#5b4e40]">
+        Loading profile...
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {/* Hide Search, Developers, and Cart here */}
+    <div className="min-h-screen bg-[#fefaf4]">
       <NavigationBar showSearch={false} showDevelopers={false} showCart={false} />
 
-      <div className="p-4 max-w-3xl mx-auto">
-        <p className="mb-4 text-lg font-medium">Here is the profile page</p>
-        <Link to="/AddProductForm" className="text-blue-600 hover:underline">
-          Click to Add Products
-        </Link>
+      <div className="max-w-4xl mx-auto p-6">
+        {/* Profile Card */}
+        <div className="bg-white border border-[#d6c9b4] rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6 mb-8">
+          <img
+            src={user.avatar || " https://via.placeholder.com/150"}
+            alt="Avatar"
+            className="w-28 h-28 rounded-full border-4 border-[#e0d2ba] object-cover"
+          />
+          <div>
+            <h2 className="text-2xl font-bold text-[#5b4e40]">{user.name}</h2>
+            <p className="text-[#7c5f41]">{user.email}</p>
+            <p className="text-sm text-[#9e8c6c] mt-1">{user.role}</p>
+            <p className="text-sm text-[#b3a18b]">Member since {user.joined}</p>
+          </div>
+        </div>
+
+        {/* Action Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Manage Products</h3>
+            <p className="text-sm text-[#7c5f41] mb-3">
+              Add or manage your agricultural products.
+            </p>
+            <Link to="/AddProductForm" className="text-sm text-blue-600 hover:underline">
+              ➤ Go to Product Management
+            </Link>
+          </div>
+
+          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Order History</h3>
+            <p className="text-sm text-[#7c5f41] mb-3">
+              View your past orders and transactions.
+            </p>
+            <Link to="/orders" className="text-sm text-blue-600 hover:underline">
+              ➤ View Order History
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

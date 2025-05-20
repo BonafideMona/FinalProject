@@ -7,6 +7,7 @@ import Signup from "../Signup/Signup";
 import NavigationBar from "../Navigator/NavigationBar";
 import Modal from "../Signup/Modal";
 import { CartProvider } from "../contexts/CartContext";
+import ImageSlider from "../ImageSliderComponent/ImageSlider";
 
 
 function HomePage() {
@@ -21,6 +22,7 @@ function HomePage() {
       <main>
         <CartProvider>
           <NavigationBar />
+          <ImageSlider />
           <TrendingProductsSection />
           <CategorySection />
           <NewlyArrived />
