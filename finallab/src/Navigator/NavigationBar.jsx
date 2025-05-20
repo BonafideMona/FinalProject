@@ -3,13 +3,12 @@ import Cart from "./Cart";
 import Logo from "./Logo";
 import Profile from "./Profile";
 import Search from "./Search";
-import Support from "./Developers";
+import Developers from "./Developers";
 import Modal from "../Signup/Modal";
 import Login from "../Signup/Login";
 import Signup from "../Signup/Signup";
 import { Link } from "react-router-dom";
 import { UserContext } from "../Signup/UserContext";
-import Developers from "./Developers";
 
 function NavigationBar({
   showSearch = true,
@@ -21,44 +20,48 @@ function NavigationBar({
   const { user, logout } = useContext(UserContext);
 
   const closeModal = () => setAuthMode(null);
-
   const confirmLogout = () => {
     logout();
     setShowLogoutConfirm(false);
   };
-
-  const cancelLogout = () => {
-    setShowLogoutConfirm(false);
-  };
+  const cancelLogout = () => setShowLogoutConfirm(false);
 
   return (
-    <div>
-      <div className="flex justify-between items-center mx-[50px] my-2">
-        <Logo />
+    <header className="bg-[#fefaf4] border-b border-[#d6c9b4] shadow-sm">
+      <div className="max-w-screen-xl mx-auto px-6 py-3 flex items-center justify-between">
+        {/* Left Section: Logo */}
+        <div className="flex items-center gap-6">
+          <Logo />
+        </div>
 
-        {/* Conditionally render Search */}
-        {showSearch && <Search />}
+        {/* Center Section: Search */}
+        {showSearch && (
+          <div className="flex-1 px-6">
+            <Search />
+          </div>
+        )}
 
-        <div className="flex items-center space-x-4">
-          {/* Conditionally render Developers */}
+        {/* Right Section: Actions */}
+        <div className="flex items-center gap-4 whitespace-nowrap">
           {showDevelopers && (
             <Link to="/DeveloperPage">
               <Developers />
             </Link>
           )}
 
-          {/* Conditionally render Cart */}
           {showCart && <Cart />}
 
           {user ? (
             <>
-              <span className="text-gray-700 font-medium">{user.accName}</span>
+              <span className="text-sm font-medium text-[#5b4e40]">
+                {user.accName}
+              </span>
               <Link to="/profile">
                 <Profile />
               </Link>
               <button
-                onClick={logout}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                onClick={() => setShowLogoutConfirm(true)}
+                className="text-sm px-4 py-2 rounded-md bg-[#a1663b] text-white hover:bg-[#7f4f2f] transition"
               >
                 Logout
               </button>
@@ -66,7 +69,7 @@ function NavigationBar({
           ) : (
             <button
               onClick={() => setAuthMode("login")}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+              className="text-sm px-4 py-2 rounded-md bg-[#5b4e40] text-white hover:bg-[#4a3f35] transition"
             >
               Login
             </button>
@@ -74,7 +77,7 @@ function NavigationBar({
         </div>
       </div>
 
-      {/* Login / Signup Modal */}
+      {/* Login/Signup Modal */}
       <Modal isOpen={authMode !== null} onClose={closeModal}>
         {authMode === "login" ? (
           <Login
@@ -91,26 +94,26 @@ function NavigationBar({
 
       {/* Logout Confirmation Modal */}
       <Modal isOpen={showLogoutConfirm} onClose={cancelLogout}>
-        <div className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Confirm Logout</h2>
-          <p className="mb-6">Are you sure you want to log out?</p>
-          <div className="flex justify-end space-x-4">
+        <div className="p-6 bg-white rounded-lg">
+          <h2 className="text-lg font-semibold text-[#3d2f24] mb-3">Confirm Logout</h2>
+          <p className="text-sm text-[#5b4e40] mb-4">Are you sure you want to log out?</p>
+          <div className="flex justify-end gap-3">
             <button
               onClick={cancelLogout}
-              className="px-4 py-2 rounded-md border border-gray-300"
+              className="px-4 py-2 rounded-md border border-[#d6c9b4] text-[#5b4e40] hover:bg-[#f6f1e7] transition"
             >
               Cancel
             </button>
             <button
               onClick={confirmLogout}
-              className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
+              className="px-4 py-2 rounded-md bg-[#a1663b] text-white hover:bg-[#7f4f2f] transition"
             >
               Logout
             </button>
           </div>
         </div>
       </Modal>
-    </div>
+    </header>
   );
 }
 

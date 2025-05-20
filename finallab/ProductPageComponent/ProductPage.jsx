@@ -28,7 +28,7 @@ function ProductPage() {
           {products.map((product) => (
             <div key={product.product_id} className="border rounded p-4">
               <img
-                src={product.image_url}
+                src={`http://localhost:8801${product.image_url}`}
                 alt={product.product_name}
                 className="w-full h-32 object-cover mb-2"
               />

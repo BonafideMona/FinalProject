@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductsTable from "./ProductsTable";
+import { useNavigate } from "react-router-dom";
 
 function AddProductForm() {
   const [productName, setProductName] = useState("");
@@ -42,7 +43,7 @@ function AddProductForm() {
     e.preventDefault();
 
     if (!accID) {
-      setMessage("Account ID missing."); 
+      setMessage("Account ID missing.");
       return;
     }
 
@@ -71,7 +72,7 @@ function AddProductForm() {
       setMessage(data.message || "Operation completed!");
       fetchProducts();
 
-      // Reset
+      // Reset form
       setProductName("");
       setCategory("");
       setUnitMeasure("");
@@ -115,38 +116,71 @@ function AddProductForm() {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-4">
+    <div className="w-full p-10 bg-[#fefaf4] min-h-screen">
       <button
-        className="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      className="mb-6 mr-4 bg-gray-300 text-[#5b4e40] px-6 py-2 rounded-xl shadow hover:bg-gray-400 transition"
+      onClick={() => navigate("/profile")}
+    >
+      ← Back to Profile
+    </button>
+
+      <button
+        className="mb-6 bg-[#5b4e40] text-white px-6 py-2 rounded-xl shadow hover:bg-[#4a3e34] transition"
         onClick={() => setShowModal(true)}
       >
-        Add Product
+        + Add Product
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-xl w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-xl border border-[#d6c9b4]">
+            <h2 className="text-2xl font-bold text-[#5b4e40] mb-6">
               {editMode ? "Update Product" : "Add Product"}
             </h2>
+
             <form onSubmit={handleOnSubmit} className="space-y-4" encType="multipart/form-data">
-              <div>
-                <label>Product Name</label>
-                <input
-                  type="text"
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                />
-              </div>
+              {[
+                {
+                  label: "Product Name",
+                  value: productName,
+                  onChange: setProductName,
+                  type: "text",
+                },
+                {
+                  label: "Available Quantity",
+                  value: availableQuantity,
+                  onChange: setAvailableQuantity,
+                  type: "number",
+                },
+                {
+                  label: "Price",
+                  value: price,
+                  onChange: setPrice,
+                  type: "number",
+                  step: "0.01",
+                },
+              ].map(({ label, value, onChange, type, step }) => (
+                <div key={label}>
+                  <label className="text-[#5b4e40]">{label}</label>
+                  <input
+                    type={type}
+                    value={value}
+                    step={step}
+                    onChange={(e) => onChange(e.target.value)}
+                    className="w-full border border-[#d6c9b4] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b3a18b]"
+                  />
+                </div>
+              ))}
 
               <div>
-                <label>Category</label>
+                <label className="text-[#5b4e40]">Category</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-[#d6c9b4] px-3 py-2 rounded-md"
                 >
                   <option value="">Select</option>
                   <option value="Fruit">Fruit</option>
@@ -164,11 +198,11 @@ function AddProductForm() {
               </div>
 
               <div>
-                <label>Unit of Measure</label>
+                <label className="text-[#5b4e40]">Unit of Measure</label>
                 <select
                   value={unitMeasure}
                   onChange={(e) => setUnitMeasure(e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-[#d6c9b4] px-3 py-2 rounded-md"
                 >
                   <option value="">Select</option>
                   <option value="kg">Kilogram</option>
@@ -186,43 +220,25 @@ function AddProductForm() {
               </div>
 
               <div>
-                <label>Available Quantity</label>
-                <input
-                  type="number"
-                  value={availableQuantity}
-                  onChange={(e) => setAvailableQuantity(e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                />
-              </div>
-
-              <div>
-                <label>Price</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                />
-              </div>
-
-              <div>
-                <label>Upload Image</label>
+                <label className="text-[#5b4e40]">Upload Image</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => setImageFile(e.target.files[0])}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-[#d6c9b4] px-3 py-2 rounded-md"
                 />
               </div>
 
-              <div className="flex justify-between">
-                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" type="submit">
-                  Submit
+              <div className="flex justify-between items-center mt-6">
+                <button
+                  type="submit"
+                  className="bg-[#5b4e40] text-white px-6 py-2 rounded-lg hover:bg-[#4a3e34] transition"
+                >
+                  {editMode ? "Update" : "Submit"}
                 </button>
                 <button
-                  className="text-gray-600 hover:text-red-600"
                   type="button"
+                  className="text-[#b85c5c] hover:text-red-700"
                   onClick={() => {
                     setShowModal(false);
                     setEditMode(false);
@@ -233,13 +249,20 @@ function AddProductForm() {
                 </button>
               </div>
 
-              {message && <div className="text-green-700 text-center">{message}</div>}
+              {message && (
+                <div className="text-center text-green-700 font-medium mt-4">{message}</div>
+              )}
             </form>
           </div>
         </div>
       )}
 
-      <ProductsTable products={products} onEdit={handleEdit} onDelete={handleDelete} fetchError={fetchError} />
+      <ProductsTable
+        products={products}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        fetchError={fetchError}
+      />
     </div>
   );
 }
