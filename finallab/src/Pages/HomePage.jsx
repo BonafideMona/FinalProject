@@ -24,8 +24,8 @@ function HomePage() {
       <main>
         <NavigationBar />
         <ImageSlider />
-        <TrendingProductsSection />
         <CategorySection />
+        <TrendingProductsSection />
         <NewlyArrived />
         <Modal />
       </main>
