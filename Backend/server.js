@@ -189,7 +189,8 @@ app.get("/get-trending-products", (req, res) => {
       product_name, 
       price, 
       image_url, 
-      accID
+      accID,
+      avail_qty
     FROM tbl_products 
     WHERE status = 'Y'
     ORDER BY price ASC
@@ -205,6 +206,7 @@ app.get("/get-trending-products", (req, res) => {
     res.json({ products: results });
   });
 });
+
 
 
 // Get newly arrived products

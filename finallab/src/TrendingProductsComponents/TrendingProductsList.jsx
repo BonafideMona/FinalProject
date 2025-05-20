@@ -11,6 +11,7 @@ export default function TrendingProductsList({ products, onIncrement, onDecremen
           price={product.price}
           image={`http://localhost:8801${product.image_url}`}
           quantity={product.quantity || 1}
+          availableQuantity={product.avail_qty} 
           onIncrement={() => onIncrement(index)}
           onDecrement={() => onDecrement(index)}
           onAddToCart={() => onAddToCart(product, product.quantity || 1)}

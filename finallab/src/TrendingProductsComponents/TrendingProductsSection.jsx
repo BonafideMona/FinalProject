@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import TrendingProductsBox from "./TrendingProductsBox";
-import { useCart } from "../contexts/CartContext"; // make sure path is correct
+import { useCart } from "../contexts/CartContext"; 
 
 export default function TrendingProductsSection() {
   const [products, setProducts] = useState([]);
@@ -12,12 +12,14 @@ export default function TrendingProductsSection() {
     fetch("http://localhost:8801/get-trending-products")
       .then((res) => res.json())
       .then((data) => {
+        console.log("Fetched trending products:", data);
         const fetchedProducts = data.products || [];
         setProducts(fetchedProducts);
         setQuantities(Array(fetchedProducts.length).fill(1));
       })
       .catch((err) => console.error("Failed to fetch products:", err));
   }, []);
+
 
   const increment = (index) => {
     const newQuantities = [...quantities];
@@ -40,14 +42,16 @@ export default function TrendingProductsSection() {
         {products.map((product, index) => (
           <TrendingProductsBox
             key={product.product_id}
+            availableQuantity={product.avail_qty} 
             name={product.product_name}
             price={product.price}
             image={`http://localhost:8801${product.image_url}`}
             quantity={quantities[index]}
             onIncrement={() => increment(index)}
             onDecrement={() => decrement(index)}
-            onAddToCart={() => addToCart(product, quantities[index])} // ✅ uses context
+            onAddToCart={() => addToCart(product, quantities[index])}
           />
+
         ))}
       </div>
 
