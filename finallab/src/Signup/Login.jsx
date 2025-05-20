@@ -133,6 +133,8 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
           const accName = fName;
           const email = decoded.email;
 
+         
+
           try {
             const res = await fetch("http://localhost:8801/google-login", {
               method: "POST",
@@ -159,6 +161,9 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
         onError={() => {
           console.log("Login Failed");
         }}
+        theme="filled_blue"
+        width="100%"
+        shape="rectangular"
       />
 
       {message && (
