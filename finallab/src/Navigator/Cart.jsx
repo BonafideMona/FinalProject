@@ -36,7 +36,7 @@ function Cart() {
       </div>
       <div className="text-sm text-gray-800">
         <p className="font-medium">Items: {totalQuantity}</p>
-        <p className="font-bold">${totalPrice.toFixed(2)}</p>
+        <p className="font-bold">₱{totalPrice.toFixed(2)}</p>
       </div>
 
       {isOpen && (
@@ -59,12 +59,12 @@ function Cart() {
                       <div>
                         <p className="font-medium">{item.product_name}</p>
                         <p className="text-gray-500 text-xs">
-                          {item.quantity} x ${item.price.toFixed(2)}
+                          {item.quantity} x ₱{item.price.toFixed(2)}
                         </p>
                       </div>
                       <div className="text-right">
                         <p className="font-bold">
-                          ${(item.quantity * item.price).toFixed(2)}
+                          ₱{(item.quantity * item.price).toFixed(2)}
                         </p>
                         <button
                           className="text-xs text-red-500 hover:underline mt-1"
@@ -79,7 +79,7 @@ function Cart() {
                 <hr className="my-2" />
                 <li className="flex justify-between font-bold mb-2">
                   <span>Total:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>₱{totalPrice.toFixed(2)}</span>
                 </li>
               </ul>
 

@@ -133,19 +133,19 @@ const CheckoutPage = () => {
                       </button>
                     </div>
                     <p className="text-sm text-gray-500 mt-1">
-                      ${item.price.toFixed(2)} each
+                      ₱{item.price.toFixed(2)} each
                     </p>
                   </div>
                 </div>
                 <p className="font-semibold">
-                  ${(item.quantity * item.price).toFixed(2)}
+                  ₱{(item.quantity * item.price).toFixed(2)}
                 </p>
               </li>
             ))}
           </ul>
 
           <div className="text-right mb-4">
-            <p className="text-lg font-bold">Total: ${totalPrice.toFixed(2)}</p>
+            <p className="text-lg font-bold">Total: ₱{totalPrice.toFixed(2)}</p>
           </div>
 
           <button
