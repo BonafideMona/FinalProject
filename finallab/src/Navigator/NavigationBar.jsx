@@ -49,7 +49,7 @@ function NavigationBar({
             </Link>
           )}
 
-          {showCart && <Cart />}
+          {showCart && user && <Cart />}
 
           {user && (
             <span className="text-sm font-medium text-[#5b4e40]">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
+import LocationPicker from "../LocationPickerComponents/LocationPicker";
 
 const CheckoutPage = () => {
   const { cartItems, clearCart, addToCart, decreaseQuantity } = useCart();
@@ -49,7 +50,7 @@ const CheckoutPage = () => {
         product_id: item.product_id,
         quantity: item.quantity,
         price: item.price,
-        seller_accID: item.accID, 
+        seller_accID: item.accID,
       })),
     };
     setIsSubmitting(true);
@@ -80,7 +81,9 @@ const CheckoutPage = () => {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold mb-6">Checkout</h1>
-
+      <LocationPicker
+        onAddressSelect={(selectedAddress) => setAddress(selectedAddress)}
+      />
       {/* Address Form */}
       <div className="mb-6">
         <label htmlFor="address" className="block font-medium mb-1">
