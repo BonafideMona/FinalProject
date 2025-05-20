@@ -17,7 +17,7 @@ function Profile() {
         email: email,
         joined: "2025", // static or you can fetch from backend
         role: "User",   // static role
-        avatar: "",     // optional default
+        avatar: "<default_avatar_url>",     // optional default
       });
     }
   }, []);
@@ -31,50 +31,66 @@ function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fefaf4]">
-      <NavigationBar showSearch={false} showDevelopers={false} showCart={false} />
+  <div className="min-h-screen bg-[#fefaf4]">
+    <NavigationBar showSearch={false} showDevelopers={false} showCart={false} />
 
-      <div className="max-w-4xl mx-auto p-6">
-        {/* Profile Card */}
-        <div className="bg-white border border-[#d6c9b4] rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6 mb-8">
-          <img
-            src={user.avatar || " https://via.placeholder.com/150"}
-            alt="Avatar"
-            className="w-28 h-28 rounded-full border-4 border-[#e0d2ba] object-cover"
-          />
-          <div>
-            <h2 className="text-2xl font-bold text-[#5b4e40]">{user.name}</h2>
-            <p className="text-[#7c5f41]">{user.email}</p>
-            <p className="text-sm text-[#9e8c6c] mt-1">{user.role}</p>
-            <p className="text-sm text-[#b3a18b]">Member since {user.joined}</p>
-          </div>
+    <div className="max-w-4xl mx-auto p-6">
+      {/* Back Button */}
+      <div className="mb-4">
+        <Link
+          to="/"
+          className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
+        >
+          ← Back
+        </Link>
+      </div>
+
+      {/* Profile Card */}
+      <div className="bg-white border border-[#d6c9b4] rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6 mb-8">
+        <img
+          src={user.avatar || "https://via.placeholder.com/150"}
+          alt="Avatar"
+          className="w-28 h-28 rounded-full border-4 border-[#e0d2ba] object-cover"
+        />
+        <div>
+          <h2 className="text-2xl font-bold text-[#5b4e40]">{user.name}</h2>
+          <p className="text-[#7c5f41]">{user.email}</p>
+          <p className="text-sm text-[#9e8c6c] mt-1">{user.role}</p>
+          <p className="text-sm text-[#b3a18b]">Member since {user.joined}</p>
+        </div>
+      </div>
+
+      {/* Action Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+          <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Manage Products</h3>
+          <p className="text-sm text-[#7c5f41] mb-3">
+            Add or manage your agricultural products.
+          </p>
+          <Link
+            to="/AddProductForm"
+            className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
+          >
+            Go to Product Management
+          </Link>
         </div>
 
-        {/* Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
-            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Manage Products</h3>
-            <p className="text-sm text-[#7c5f41] mb-3">
-              Add or manage your agricultural products.
-            </p>
-            <Link to="/AddProductForm" className="text-sm text-blue-600 hover:underline">
-              ➤ Go to Product Management
-            </Link>
-          </div>
-
-          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
-            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Order History</h3>
-            <p className="text-sm text-[#7c5f41] mb-3">
-              View your past orders and transactions.
-            </p>
-            <Link to="/orders" className="text-sm text-blue-600 hover:underline">
-              ➤ View Order History
-            </Link>
-          </div>
+        <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+          <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Order History</h3>
+          <p className="text-sm text-[#7c5f41] mb-3">
+            View your past orders and transactions.
+          </p>
+          <Link
+            to="/orders"
+            className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
+          >
+            View Order History
+          </Link>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default Profile;
