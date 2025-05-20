@@ -144,7 +144,7 @@ function AddProductForm() {
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-xl border border-[#d6c9b4]">
+          <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-xl border border-[#5b4e40]">
             <h2 className="text-2xl font-bold text-[#5b4e40] mb-6">
               {editMode ? "Update Product" : "Add Product"}
             </h2>
@@ -178,7 +178,7 @@ function AddProductForm() {
                     value={value}
                     step={step}
                     onChange={(e) => onChange(e.target.value)}
-                    className="w-full border border-[#d6c9b4] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b3a18b]"
+                    className="w-full border border-[#b3a18b] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5b4e40]"
                   />
                 </div>
               ))}
