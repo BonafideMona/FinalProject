@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   GoogleMap,
   LoadScript,
@@ -9,12 +9,12 @@ import {
   "AIzaSyBSgJ8YkO7z94BQvUMufPiQ7WU8EeI9nL0";
 const libraries = ["places"];
 const options = {
-  componentRestrictions: { country: "ph" }, // Restrict to Philippines
+  componentRestrictions: { country: "ph" }, 
 };
 
 const LocationPicker = ({ onAddressSelect }) => {
   const searchBoxRef = useRef(null);
-  const [location, setLocation] = React.useState({
+  const [location, setLocation] = useState({
     lat: 6.5244,
     lng: 3.3792
   });
