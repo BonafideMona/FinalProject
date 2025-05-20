@@ -2,7 +2,6 @@ import React from "react";
 
 export default function TrendingProductsBox({
   name,
-  availableQuantity ,
   price,
   image,
   quantity,
@@ -24,8 +23,6 @@ export default function TrendingProductsBox({
       <p className="text-sm font-semibold text-[#3d2f24] mb-2">
         ₱{Number(price).toFixed(2)}
       </p>
-
-      <p className="text-xs text-[#7c5f41] mb-2">Available: {availableQuantity}</p>
 
       <div className="flex items-center justify-center gap-2 mb-3">
         <button

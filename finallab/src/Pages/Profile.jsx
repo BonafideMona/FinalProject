@@ -39,7 +39,7 @@ function Profile() {
       <div className="mb-4">
         <Link
           to="/"
-          className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
+          className="inline-block px-4 py-2 text-sm font-medium text-[#5b4e40] bg-[#ede6dd] rounded-md hover:bg-[#d8cfc3] hover:text-[#44392e] transition"
         >
           ← Back
         </Link>
@@ -83,15 +83,15 @@ function Profile() {
 
         {/* Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
-            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Manage Products</h3>
-            <p className="text-sm text-[#7c5f41] mb-3">
-              Add or manage your agricultural products.
-            </p>
-            <Link to="/AddProductForm" className="text-sm text-blue-600 hover:underline">
-              ➤ Go to Product Management
-            </Link>
-          </div>
+            <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+              <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Manage Products</h3>
+              <p className="text-sm text-[#7c5f41] mb-3">
+                Add or manage your agricultural products.
+              </p>
+              <Link to="/AddProductForm" className="text-sm text-blue-600 hover:underline">
+                ➤ Go to Product Management
+              </Link>
+            </div>
 
           <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
             <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">Order History</h3>
