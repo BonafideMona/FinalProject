@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../Signup/UserContext";
 
 function NavigationBar({
-  showSearch = true,
   showDevelopers = true,
   showCart = true,
 }) {
@@ -33,13 +32,6 @@ function NavigationBar({
         <div className="flex items-center gap-6">
           <Logo />
         </div>
-
-        {/* Center Section: Search */}
-        {showSearch && (
-          <div className="flex-1 px-6">
-            <Search />
-          </div>
-        )}
 
         {/* Right Section: Actions */}
         <div className="flex items-center gap-4 whitespace-nowrap">
