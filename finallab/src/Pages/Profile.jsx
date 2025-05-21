@@ -34,17 +34,18 @@ function Profile() {
     <div className="min-h-screen bg-[#fefaf4]">
       <NavigationBar showSearch={false} showDevelopers={false} showCart={false} />
 
-    <div className="max-w-4xl mx-auto p-6">
-      {/* Back Button */}
-      <div className="mb-4">
-        <Link
-          to="/"
-          className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
-        >
-          ← Back
-        </Link>
-      </div>
-    
+      <div className="max-w-6xl mx-auto p-6">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/">
+            <button
+              className="mb-6 mr-4 bg-[#ede6dd] text-[#5b4e40] font-medium px-6 py-2 rounded-xl shadow-sm hover:bg-[#d8cfc3] hover:text-[#44392e] transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#b3a18b] focus:ring-offset-1"
+            >
+              ← Back to Home
+            </button>
+          </Link>
+        </div>
+
         {/* Profile Card */}
         <div className="bg-white border border-[#d6c9b4] rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6 mb-8">
           {user.avatar ? (
@@ -68,9 +69,8 @@ function Profile() {
         </div>
 
         {/* Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Manage Products */}
           <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
             <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">
               Manage Products
@@ -100,9 +100,20 @@ function Profile() {
             >
               View Order History
             </Link>
+          </div>
 
-
-         
+          {/* Manage Orders */}
+          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">
+              Manage Orders
+            </h3>
+            <p className="text-sm text-[#7c5f41] mb-3">Manage order products.</p>
+            <Link
+              to="/orderpage"
+              className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
+            >
+              Go to Order Management
+            </Link>
           </div>
         </div>
       </div>
