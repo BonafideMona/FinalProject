@@ -37,7 +37,7 @@ export default function TrendingProductsSection() {
 
   return (
     <section className="py-8 px-20 bg-[#fefaf4] ">
-      <h2 className="text-xl font-bold text-[#5b4e40] mb-4">Best Deals</h2>
+      <h2 className="text-xl font-semibold mb-6 text-black">Best Deals</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
         {products.map((product, index) => (
           <TrendingProductsBox

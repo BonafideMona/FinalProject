@@ -69,6 +69,8 @@ function Profile() {
 
         {/* Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+
           <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
             <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">
               Manage Products
@@ -98,20 +100,9 @@ function Profile() {
             >
               View Order History
             </Link>
-          </div>
 
-          {/* Manage Orders */}
-          <div className="p-5 bg-[#fefaf4] border border-[#d6c9b4] rounded-xl shadow-sm hover:shadow-md transition">
-            <h3 className="text-lg font-semibold text-[#5b4e40] mb-2">
-              Manage Orders
-            </h3>
-            <p className="text-sm text-[#7c5f41] mb-3">Manage order products.</p>
-            <Link
-              to="/orderpage"
-              className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#5b4e40] rounded-md hover:bg-[#4a3f35] transition"
-            >
-              Go to Order Management
-            </Link>
+
+         
           </div>
         </div>
       </div>
