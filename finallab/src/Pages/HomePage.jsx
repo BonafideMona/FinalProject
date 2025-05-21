@@ -10,28 +10,27 @@ import { CartProvider } from "../contexts/CartContext";
 import ImageSlider from "../ImageSliderComponent/ImageSlider";
 
 
-// HomePage.jsx
 function HomePage() {
   useEffect(() => {
     fetch("http://localhost:8801/tbl_accounts")
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
-  }, []);
-
+  });
   return (
     <div>
       <main>
-        <NavigationBar />
-        <ImageSlider />
-        <CategorySection />
-        <TrendingProductsSection />
-        <NewlyArrived />
-        <Modal />
+        <CartProvider>
+          <NavigationBar />
+          <ImageSlider />
+          <TrendingProductsSection />
+          <CategorySection />
+          <NewlyArrived />
+          <Modal />
+        </CartProvider>
       </main>
     </div>
   );
 }
-
 
 export default HomePage;
