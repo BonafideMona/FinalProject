@@ -29,12 +29,8 @@ function CategorySection() {
 
   return (
     <section className="py-8 px-20 bg-[#fefaf4]">
-      {/* Header row: title on the left, buttons on the right */}
       <div className="flex items-center justify-between mb-6">
-        {/* Heading */}
-        <h2 className="text-xl font-semibold text-[#5b4e40]">Categories</h2>
-
-        {/* Pagination Buttons */}
+        <h2 className="text-xl font-bold text-[#5b4e40] mb-4">Categories</h2>
         {totalPages > 1 && (
           <div className="flex gap-3">
             <button

@@ -45,7 +45,7 @@ function Profile() {
             </button>
           </Link>
         </div>
-
+    
         {/* Profile Card */}
         <div className="bg-white border border-[#d6c9b4] rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6 mb-8">
           {user.avatar ? (

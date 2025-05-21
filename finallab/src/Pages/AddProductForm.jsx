@@ -129,11 +129,13 @@ function AddProductForm() {
     {/* Content with padding */}
     <div className="p-10">
       <button
-        className="mb-6 mr-4 bg-gray-300 text-[#5b4e40] px-6 py-2 rounded-xl shadow hover:bg-gray-400 transition"
-        onClick={() => navigate("/profile")}
-      >
-        ← Back to Profile
-      </button>
+          className="mb-6 mr-4 bg-[#ede6dd] text-[#5b4e40] font-medium px-6 py-2 rounded-xl shadow-sm hover:bg-[#d8cfc3] hover:text-[#44392e] transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#b3a18b] focus:ring-offset-1"
+          onClick={() => navigate("/profile")}
+        >
+          ← Back to Profile
+        </button>
+
+      
 
       <button
         className="mb-6 bg-[#5b4e40] text-white px-6 py-2 rounded-xl shadow hover:bg-[#4a3e34] transition"

@@ -46,6 +46,7 @@ function NewlyArrived() {
             price={product.price}
             image={`http://localhost:8801${product.image_url}`}
             quantity={quantities[index]}
+            availableQuantity={product.avail_qty}
             onIncrement={() => increment(index)}
             onDecrement={() => decrement(index)}
             onAddToCart={() => addToCart(product, quantities[index])}

@@ -29,13 +29,14 @@ function DeveloperPage() {
 
   return (
     <div className="min-h-screen bg-[#fefaf4] py-12 px-6">
+      
       {/* Back Button */}
       <button
-        onClick={() => navigate("/")}
-        className="mb-8 text-sm text-[#7c5f41] hover:underline"
-      >
-        ← Back to Home
-      </button>
+          className="mb-6 mr-4 bg-[#ede6dd] text-[#5b4e40] font-medium px-6 py-2 rounded-xl shadow-sm hover:bg-[#d8cfc3] hover:text-[#44392e] transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#b3a18b] focus:ring-offset-1"
+          onClick={() => navigate("/")}
+        >
+          ← Back to Home
+        </button>
 
       {/* Heading */}
       <div className="text-center mb-12">

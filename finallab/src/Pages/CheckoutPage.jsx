@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCart } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import LocationPicker from "../LocationPickerComponents/LocationPicker";
+import NavigationBar from "../Navigator/NavigationBar";
 
 const CheckoutPage = () => {
   const { cartItems, clearCart, addToCart, decreaseQuantity } = useCart();
@@ -34,7 +35,6 @@ const CheckoutPage = () => {
     }
   }, []);
 
-  // ✅ Handle placing order
   const handlePlaceOrder = () => {
     if (!address.trim()) {
       alert("Address cannot be empty.");
@@ -53,13 +53,12 @@ const CheckoutPage = () => {
         seller_accID: item.accID,
       })),
     };
+
     setIsSubmitting(true);
 
     fetch("http://localhost:8801/create-order", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData),
     })
       .then((res) => {
@@ -79,86 +78,115 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-semibold mb-6">Checkout</h1>
-      <LocationPicker
-        onAddressSelect={(selectedAddress) => setAddress(selectedAddress)}
-      />
-      {/* Address Form */}
-      <div className="mb-6">
-        <label htmlFor="address" className="block font-medium mb-1">
-          Delivery Address
-        </label>
-        <textarea
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          rows={3}
-          className="w-full border rounded px-3 py-2"
-          placeholder="Enter your delivery address..."
-        />
-      </div>
+    <div className="bg-[#fefaf4] min-h-screen">
+      <NavigationBar showCart={true} />
 
-      {cartItems.length === 0 ? (
-        <p className="text-gray-600">Your cart is empty.</p>
-      ) : (
-        <>
-          <ul className="divide-y mb-6">
-            {cartItems.map((item) => (
-              <li
-                key={item.product_id}
-                className="py-4 flex justify-between items-center"
-              >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={`http://localhost:8801${item.image_url}`}
-                    alt={item.product_name}
-                    className="w-14 h-14 object-cover rounded"
-                  />
-                  <div>
-                    <p className="font-medium">{item.product_name}</p>
-                    <div className="flex items-center mt-1 space-x-2">
-                      <button
-                        onClick={() => decreaseQuantity(item.product_id)}
-                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
-                      >
-                        −
-                      </button>
-                      <span className="text-sm">{item.quantity}</span>
-                      <button
-                        onClick={() => addToCart(item, 1)}
-                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
-                      >
-                        +
-                      </button>
+      <div className="max-w-6xl mx-auto px-8 py-12">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="text-[#5b4e40] hover:underline mb-6 text-sm flex items-center gap-2"
+        >
+          ← Back
+        </button>
+
+        <h1 className="text-4xl font-semibold text-[#5b4e40] mb-12 border-b pb-4">
+          Checkout
+        </h1>
+
+        {/* Location Picker */}
+        <div className="mb-10">
+          <LocationPicker
+            onAddressSelect={(selectedAddress) => setAddress(selectedAddress)}
+          />
+        </div>
+
+        {/* Address Input */}
+        <div className="mb-12">
+          <label htmlFor="address" className="block text-[#5b4e40] font-medium mb-2 text-lg">
+            Delivery Address
+          </label>
+          <textarea
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            rows={4}
+            className="w-full border border-[#d6c2ae] rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b08558] bg-white text-base"
+            placeholder="Enter your delivery address..."
+          />
+        </div>
+
+        {/* Cart Items */}
+        {cartItems.length === 0 ? (
+          <p className="text-[#b85c5c] italic text-lg">Your cart is empty.</p>
+        ) : (
+          <>
+            <ul className="divide-y divide-[#e0d7cd] mb-12">
+              {cartItems.map((item) => (
+                <li
+                  key={item.product_id}
+                  className="py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+                >
+                  <div className="flex gap-6 w-full md:w-auto">
+                    <img
+                      src={`http://localhost:8801${item.image_url}`}
+                      alt={item.product_name}
+                      className="w-24 h-24 object-cover rounded border border-[#d6c2ae]"
+                    />
+                    <div>
+                      <p className="font-medium text-[#5b4e40] text-lg">
+                        {item.product_name}
+                      </p>
+                      <div className="flex items-center mt-3 space-x-2">
+                        <button
+                          onClick={() => decreaseQuantity(item.product_id)}
+                          className="px-3 py-1 bg-[#eee6dd] rounded hover:bg-[#e0d7cd] text-sm"
+                        >
+                          −
+                        </button>
+                        <span className="text-base">{item.quantity}</span>
+                        <button
+                          onClick={() => addToCart(item, 1)}
+                          className="px-3 py-1 bg-[#eee6dd] rounded hover:bg-[#e0d7cd] text-sm"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <p className="text-sm text-[#9c8b7b] mt-2">
+                        ₱{item.price.toFixed(2)} each
+                      </p>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">
-                      ₱{item.price.toFixed(2)} each
-                    </p>
                   </div>
-                </div>
-                <p className="font-semibold">
-                  ₱{(item.quantity * item.price).toFixed(2)}
-                </p>
-              </li>
-            ))}
-          </ul>
+                  <div className="text-right font-semibold text-[#5b4e40] text-lg w-full md:w-auto">
+                    ₱{(item.quantity * item.price).toFixed(2)}
+                  </div>
+                </li>
+              ))}
+            </ul>
 
-          <div className="text-right mb-4">
-            <p className="text-lg font-bold">Total: ₱{totalPrice.toFixed(2)}</p>
-          </div>
+            {/* Total and Place Order */}
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-10 gap-4">
+              <p className="text-3xl font-bold text-[#5b4e40]">
+                Total: ₱{totalPrice.toFixed(2)}
+              </p>
+              <button
+                onClick={handlePlaceOrder}
+                disabled={isSubmitting}
+                className="bg-[#6b8e23] text-white px-8 py-3 rounded hover:bg-[#5f7e1c] transition-colors text-base"
+              >
+                {isSubmitting ? "Placing Order..." : "Place Order"}
+              </button>
+            </div>
 
-          <button
-            onClick={handlePlaceOrder}
-            disabled={isSubmitting}
-            className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors"
-          >
-            {isSubmitting ? "Placing Order..." : "Place Order"}
-          </button>
-
-          {message && <p className="mt-4 text-green-600">{message}</p>}
-        </>
-      )}
+            {/* Confirmation Message */}
+            {message && (
+              <p className="text-center text-green-600 font-medium text-lg mt-6">
+                {message}
+              </p>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
