@@ -36,8 +36,8 @@ function NewlyArrived() {
   };
 
   return (
-    <section className="py-8 px-4">
-      <h2 className="text-xl font-semibold mb-6">Newly Arrived Products</h2>
+    <section className="py-8 px-20 bg-[#fefaf4] ">
+      <h2 className="text-xl font-bold text-[#5b4e40] mb-4">Newly Arrived Products</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
         {products.map((product, index) => (
           <TrendingProductsBox
